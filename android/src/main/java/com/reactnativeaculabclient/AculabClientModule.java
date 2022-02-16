@@ -9,10 +9,9 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.module.annotations.ReactModule;
 
-@ReactModule(name = AculabClientModule.NAME)
 public class AculabClientModule extends ReactContextBaseJavaModule {
-    public static final String NAME = "SwitchAudio";
     private final ReactApplicationContext reactContext;
 
     AculabClientModule(ReactApplicationContext reactContext) {
@@ -23,7 +22,7 @@ public class AculabClientModule extends ReactContextBaseJavaModule {
     @Override
     @NonNull
     public String getName() {
-        return NAME;
+        return "AculabClientModule";
     }
 
     @ReactMethod

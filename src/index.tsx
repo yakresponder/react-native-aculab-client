@@ -1,9 +1,14 @@
-import { NativeModules } from 'react-native';
+'use strict';
 
-type AculabClientType = {
-  multiply(a: number, b: number): Promise<number>;
+import AcuMobCom, { getToken } from './AcuMobCom';
+import { deleteSpaces, showAlert } from './helpers';
+import { turnOnSpeaker, isSpeakerphoneOn } from './SwitchAudio';
+
+export {
+  AcuMobCom,
+  turnOnSpeaker,
+  isSpeakerphoneOn,
+  getToken,
+  deleteSpaces,
+  showAlert,
 };
-
-const { AculabClient } = NativeModules;
-
-export default AculabClient as AculabClientType;
