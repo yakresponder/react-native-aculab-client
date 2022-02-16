@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* AcuMobComExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* AcuMobComExampleTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -26,10 +25,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* AcuMobComExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AcuMobComExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* AcuMobComExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AcuMobComExampleTests.m; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* AcuMobComExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AcuMobComExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = AcuMobComExample/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = AcuMobComExample/AppDelegate.m; sourceTree = "<group>"; };
@@ -63,27 +59,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* AcuMobComExampleTests */ = {
-			isa = PBXGroup;
-			children = (
-				00E356F21AD99517003FC87E /* AcuMobComExampleTests.m */,
-				00E356F01AD99517003FC87E /* Supporting Files */,
-			);
-			path = AcuMobComExampleTests;
-			sourceTree = "<group>";
-		};
-		00E356F01AD99517003FC87E /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				00E356F11AD99517003FC87E /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* AcuMobComExample */ = {
 			isa = PBXGroup;
 			children = (
-				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -125,7 +103,6 @@
 			children = (
 				13B07FAE1A68108700A75B9A /* AcuMobComExample */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* AcuMobComExampleTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				6B9684456A2045ADE5A6E47E /* Pods */,
@@ -378,7 +355,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* AcuMobComExampleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +497,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -581,6 +558,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
