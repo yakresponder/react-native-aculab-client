@@ -272,8 +272,9 @@ PODS:
   - React-jsinspector (0.66.0)
   - React-logger (0.66.0):
     - glog
-  - react-native-aculab-client (0.1.0):
+  - react-native-aculab-client (0.0.1):
     - React-Core
+    - react-native-webrtc
   - react-native-safe-area-context (3.3.2):
     - React-Core
   - react-native-webrtc (1.94.1):
@@ -537,7 +538,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 6a05173dc0142abc582bd4edd2d23146b8cc218a
   React-jsinspector: be95ad424ba9f7b817aff22732eb9b1b810a000a
   React-logger: 9a9cd87d4ea681ae929b32ef580638ff1b50fb24
-  react-native-aculab-client: 2ed86a2b2ca626a97c25856479ab4dd6938097ac
+  react-native-aculab-client: 4fe1542d5bec2e36e5363d59b9589f97903c83e9
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-webrtc: 2f20515f3ebb9dbf1f2aad638cc7573396cf948f
   React-perflogger: 1f554c2b684e2f484f9edcdfdaeedab039fbaca8
@@ -558,6 +559,6 @@ SPEC CHECKSUMS:
   Yoga: c11abbf5809216c91fcd62f5571078b83d9b6720
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: edc7da7bc3292fa0392bc4adc53774a84d0403fb
+PODFILE CHECKSUM: 241b8aff1ee1fcb38d0c5d110b74560e03b9673a
 
 COCOAPODS: 1.11.2

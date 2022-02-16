@@ -9,6 +9,7 @@ target 'AcuMobComExample' do
   use_react_native!(:path => config["reactNativePath"])
 
   pod 'react-native-aculab-client', :path => '../..'
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   # Enables Flipper.
   #
