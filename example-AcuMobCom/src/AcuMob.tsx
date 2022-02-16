@@ -44,7 +44,7 @@ const MainCallButtons = (props: any) => {
 
 const DialKeypad = (props: any) => {
   return (
-    <View style={[styles.center, { bottom: 20 }]}>
+    <View style={styles.dialKeypad}>
       {props.acuMobCom.state.callState === 'calling' ||
       props.acuMobCom.state.callState === 'ringing' ? (
         <View>

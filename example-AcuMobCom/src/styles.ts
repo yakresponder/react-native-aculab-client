@@ -105,4 +105,9 @@ export const styles = StyleSheet.create({
   height100: {
     height: '100%',
   },
+  dialKeypad: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: 20,
+  },
 });

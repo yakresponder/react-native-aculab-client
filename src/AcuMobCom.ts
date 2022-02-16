@@ -104,7 +104,6 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
             this.setState({ localStream: null });
           }
           console.log('Registration complete');
-          console.log('CLIENT', this.state.client);
         }
       );
     } else {
