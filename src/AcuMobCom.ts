@@ -50,11 +50,11 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
     remoteStream: null,
     localStream: null,
     dtmfEnabled: false,
-    serviceName: 'webrtcdemo', // service name to call
+    serviceName: '', // service name to call
     webRTCToken: '',
     client: null,
     call: null,
-    callClientId: 'marmar', // client ID to call
+    callClientId: '', // client ID to call
     callState: 'idle', // human readable call status
     callOptions: {
       constraints: { audio: false, video: false },
