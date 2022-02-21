@@ -16,7 +16,7 @@ Dependencies
 
 This package implements Aculab webRTC services in the React Native project. The main part of the package is component class AcuMobCom. You can write a custom class that extends this component and uses its state variables and methods.
 
-Please visit the [Demo App](https://github.com/aculab-com/RNAcuMobComDemo) to see it being used practice.
+Please visit the [Demo App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AcuMobCom) to see it being used practice.
 
 ## Installation
 
@@ -90,7 +90,7 @@ yourProject/android/app/gradle/build.gradle
 
 ---
 
-## Usage - [Demo App](https://github.com/aculab-com/RNAcuMobComDemo)
+## Usage - [Demo App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AcuMobCom)
 
 ### Use the package as a react native class component
 
@@ -128,7 +128,11 @@ class YourClassComponent extends AcuMobCom {
 
 ## Workflow
 
-Every client of the Aculab WebRTC services must first obtain [WebRTC Token](https://github.com/aculab-com/react-native-aculab-client/blob/431df94932dee1adc65a07d6517b1f5328098885/src/AcuMobCom.ts#L9) and use it to [register](https://github.com/aculab-com/react-native-aculab-client/blob/431df94932dee1adc65a07d6517b1f5328098885/src/AcuMobCom.ts#L84) their client id first.
+### 1. Obtain [WebRTC Token](https://github.com/aculab-com/react-native-aculab-client/blob/431df94932dee1adc65a07d6517b1f5328098885/src/AcuMobCom.ts#L9)
+
+### 2. Use WebRTC Token to [register](https://github.com/aculab-com/react-native-aculab-client/blob/431df94932dee1adc65a07d6517b1f5328098885/src/AcuMobCom.ts#L84) a client id
+
+### 3. If registration is successful you obtain a client object and AcuMobCom can be used to it's full extend
 
 **NOTE: that registration can only occur when the callState is 'idle'.**
 
@@ -136,14 +140,14 @@ Every client of the Aculab WebRTC services must first obtain [WebRTC Token](http
 
 Use state **callState** as indication of current state.
 
-##### Call Client
+#### Call Client
 
 1. set state callClientId to client ID you want to call
 2. call callClient method
 
 **NOTE: In order to successfully call between clients, they must be registered under the same Aculab Cloud Username. For Example user 'Anna123' registered under Cloud Username 'blue.star@company.com' can call 'Tom123' if 'Tom123' is registered under Cloud Username 'blue.star@company.com'. If 'Tom123' is registered under Cloud Username 'green.star@company.com' the call will always fail.**
 
-##### Call Service
+#### Call Service
 
 1. set state serviceName to service ID you want to call
 2. call callService method

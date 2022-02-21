@@ -54,7 +54,7 @@ public void peerConnectionSendDTMF(String tone, int duration, int interToneGap, 
 You can change default registration credentials in the RegisterScreen states.
 This step is not required but it makes testing easier, however you can always edit these props in the registration screen via UI in the Example (Demo) app.
 
-[AcuMobCom props](https://github.com/aculab-com/react-native-AcuMobCom#usage---demo-app)
+[AcuMobCom props](https://github.com/aculab-com/react-native-aculab-client/blob/cf2c0f62ac12c4330e4f4d24883bcb31152a64c5/example-AcuMobCom/src/RegisterScreen.tsx#L14)
 
 ```typescript
 const RegisterScreen = () => {
@@ -72,4 +72,4 @@ Now you're good to go.
 
 ---
 
-#### Note that and apiAccessKey should not ever be displayed and should be treated as sensitive data. In the Demo app they are displayed only to assist developer testing. You should not display this sensitive information in your application.
+#### Note that and apiAccessKey should not ever be displayed and should be treated as sensitive data. In the Demo app they are displayed only to assist developer testing. You should not display this sensitive information in your application

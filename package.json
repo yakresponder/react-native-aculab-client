@@ -1,6 +1,6 @@
 {
   "name": "react-native-aculab-client",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Aculab client for react native applications",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -39,7 +39,10 @@
     "webrtc",
     "cloud",
     "call",
-    "CallKeep"
+    "callkeep",
+    "video call",
+    "peer to peer",
+    "voip"
   ],
   "repository": "https://github.com/aculab-com/react-native-aculab-client",
   "author": "Martin Folke <martin.folke@aculab.com> (https://github.com/folin03)",
