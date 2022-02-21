@@ -7,7 +7,7 @@ This package implements [Aculab](https://www.aculab.com/) webRTC services in the
 ## AcuMobCom component
 
 ![npm](https://img.shields.io/npm/dw/react-native-aculab-client)
-[![npm_package](https://img.shields.io/npm/v/react-native-acumobcom?color=green&label=npm%20package)](https://www.npmjs.com/package/react-native-aculab-client)
+[![npm_package](https://img.shields.io/npm/v/react-native-aculab-client?color=green)](https://www.npmjs.com/package/react-native-aculab-client)
 [![license](https://img.shields.io/npm/l/react-native-acumobcom)](https://github.com/aculab-com/react-native-aculab-client/blob/main/LICENSE)
 
 ### Dependencies
