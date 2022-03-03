@@ -168,7 +168,7 @@ Use state **callState** as indication of current state.
 |                           | 'got media'       |               | Connected to a service                                                    |
 |                           | 'ringing'         |               | Found service/client and awaits answer                                    |
 |                           | 'connecting'      |               | Call was answered, connecting in progress                                 |
-|                           | 'connected'       |               | Peer to peer connection established                                       |
+|                           | 'connected'       |               | Peer-to-peer connection established                                       |
 |                           | 'error'           |               | Error state                                                               |
 | webRTCToken               | string            | ''            | Holds WebRTC Token after registration                                     |
 | callClientId              | string            | ''            | Holds client ID for outbound call                                         |

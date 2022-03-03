@@ -12,9 +12,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 type Props = NativeStackNavigationProp<AuthStackParam, 'AcuMobCom'>;
 
 export const RegisterScreen = () => {
-  const [webRTCAccessKey, setWebRTCAccessKey] = useState(
-    'heh0zprmk7okgtl90dx9i0xao'
-  );
+  const [webRTCAccessKey, setWebRTCAccessKey] = useState('');
   const [apiAccessKey, setApiAccessKey] = useState('');
   const [cloudRegionId, setCloudRegionId] = useState('');
   const [cloudUsername, setCloudUsername] = useState('');
@@ -38,7 +36,7 @@ export const RegisterScreen = () => {
     } catch {
       showAlert(
         '',
-        'Account credential are incorrect: Check API Access Key, Cloud Region ID and Cloud Username'
+        'Credential are incorrect: Check API Access Key, Cloud Region ID, Cloud Username and Register Client ID'
       );
     }
   };

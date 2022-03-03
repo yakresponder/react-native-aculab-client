@@ -49,7 +49,7 @@ public void peerConnectionSendDTMF(String tone, int duration, int interToneGap, 
 }
 ```
 
-### 5. Edit parameters given to AcuMob in file App.tsx to your own cloud
+### 5. Edit parameters given to AcuMob in file RegisterScreen.tsx to your own cloud
 
 You can change default registration credentials in the RegisterScreen states.
 This step is not required but it makes testing easier, however you can always edit these props in the registration screen via UI in the Example (Demo) app.
