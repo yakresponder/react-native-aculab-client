@@ -1,6 +1,6 @@
 {
   "name": "react-native-aculab-client",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "Aculab client for react native applications",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -41,7 +41,7 @@
     "call",
     "callkeep",
     "video call",
-    "peer to peer",
+    "peer-to-peer",
     "voip"
   ],
   "repository": "https://github.com/aculab-com/react-native-aculab-client",
