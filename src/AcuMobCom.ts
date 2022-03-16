@@ -439,7 +439,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
     obj.call.call_state = 'Connected';
     //Add to media event instead/also?
     this.setState({ localStream: this.getLocalStream() });
-    this.setState({ remoteStream: obj.call._remote_stream[0] });
+    this.setState({ remoteStream: obj.call._remote_stream });
   }
 
   /**
