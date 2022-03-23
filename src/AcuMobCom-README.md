@@ -4,13 +4,13 @@ Aculab react-native sdk
 
 ![npm](https://img.shields.io/npm/dw/react-native-aculab-client)
 [![npm_package](https://img.shields.io/npm/v/react-native-aculab-client?color=green)](https://www.npmjs.com/package/react-native-aculab-client)
-[![license](https://img.shields.io/npm/l/react-native-acumobcom)](https://github.com/aculab-com/react-native-aculab-client/blob/main/LICENSE)
+[![license](https://img.shields.io/npm/l/react-native-aculab-client)](https://github.com/aculab-com/react-native-aculab-client/blob/main/LICENSE)
 
 Dependencies
 
-[![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-acumobcom/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
-[![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-acumobcom/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
-[![react-native-webrtc](https://img.shields.io/npm/dependency-version/react-native-acumobcom/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
+[![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
+[![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
+[![react-native-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
 
 ---
 
