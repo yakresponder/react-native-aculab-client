@@ -14,7 +14,9 @@ import { deleteSpaces, showAlert } from './helpers';
  */
 export const getToken = async (webRTCToken: WebRTCToken): Promise<string> => {
   let url =
-    'https://ws.aculabcloud.net/webrtc_generate_token?client_id=' +
+    'https://ws-' +
+    webRTCToken.cloudRegionId +
+    '.aculabcloud.net/webrtc_generate_token?client_id=' +
     webRTCToken.registerClientId +
     '&ttl=' +
     webRTCToken.tokenLifeTime +
