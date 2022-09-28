@@ -14,7 +14,6 @@
     "ios",
     "cpp",
     "react-native-aculab-client.podspec",
-    "!lib/typescript/example-AcuMobCom",
     "!android/build",
     "!ios/build",
     "!**/__tests__",
@@ -26,10 +25,7 @@
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "prepare": "bob build",
-    "release": "release-it",
-    "example": "yarn --cwd example",
-    "pods": "cd example && pod-install --quiet",
-    "bootstrap": "yarn example && yarn && yarn pods"
+    "release": "release-it"
   },
   "keywords": [
     "react-native",
@@ -85,7 +81,6 @@
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
-      "<rootDir>/example-AcuMobCom/node_modules",
       "<rootDir>/lib/"
     ]
   },
