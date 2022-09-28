@@ -20,9 +20,9 @@ AcuMobCom is a react native component allowing iOS and Android platforms to use 
 
 AcuMobCom [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AcuMobCom-README.md)
 
-Please visit the [Demo App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AcuMobCom) to see it being used practice.
+Please visit the [Example App](https://github.com/aculab-com/AcuMobCom-Example) to see it being used in practice.
 
-AcuMobCom [Example (Demo) app README](https://github.com/aculab-com/react-native-aculab-client/blob/main/example-AcuMobCom/AcuMobCom-Example-README.md)
+[AcuMobCom Example app README](https://github.com/aculab-com/AcuMobCom-Example/blob/main/README.md)
 
 ## License
 
