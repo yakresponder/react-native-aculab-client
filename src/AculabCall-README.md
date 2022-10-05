@@ -17,7 +17,7 @@ Dependencies
 
 This component implements Aculab webRTC services in the React Native project. This component extends class AcuMobCom. You can write a custom class that extends this component and uses its state variables and methods.
 
-Please visit the [Example App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AculabCall) to see it being used practice.
+Please visit the [Example App](https://github.com/aculab-com/AculabCall-Example) to see it being used practice.
 
 ## Installation
 
@@ -208,7 +208,7 @@ yourProject/android/app/gradle/build.gradle
 
 ---
 
-## Usage - [Example App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AculabCall)
+## Usage - [Example App](https://github.com/aculab-com/AculabCall-Example)
 
 ### Use the package as a react native class component
 
@@ -362,6 +362,14 @@ import { turnOnSpeaker } from 'react-native-aculab-client';
 | Function                  | Returns   | Description                                                           |
 |---                        | ---       | ---                                                                   |
 | turnOnSpeaker(boolean)    |           | pass true to turn ON the external audio set or false to turn it OFF.  |
+
+## Troubleshooting
+
+at the time of writing react-native-callkeep has an issue, that throws an error when building android
+
+'Package androidx.localbroadcastmanager.content does not exist'
+
+The solution to the problem is described [here](https://github.com/react-native-webrtc/react-native-callkeep/issues/594#issuecomment-1196411702).
 
 ## License
 
