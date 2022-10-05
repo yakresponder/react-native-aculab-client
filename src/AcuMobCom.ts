@@ -47,49 +47,51 @@ export const getToken = async (webRTCToken: WebRTCToken): Promise<string> => {
 /**
  * AcuMobCom is a complex component Allowing WebRTC communication using Aculab Cloud Services.
  */
-class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
-  state: AcuMobComState = {
-    remoteStream: null,
-    localStream: null,
-    dtmfEnabled: false,
-    serviceName: '', // service name to call
-    webRTCToken: '',
-    client: null,
-    call: null,
-    callClientId: '', // client ID to call
-    callState: 'idle', // human readable call status
-    callOptions: {
-      constraints: { audio: false, video: false },
-      receiveAudio: false,
-      receiveVideo: false,
-    },
-    outputAudio: false,
-    mic: false,
-    outputVideo: false,
-    camera: false,
-    localVideoMuted: false,
-    remoteVideoMuted: false,
-    speakerOn: false,
-    incomingCallClientId: '',
-    callUuid: '',
-    callType: 'none',
-    callAnswered: false,
-    incomingUUI: false,
-    connectingCall: false,
-  };
-
-  constructor(props: AcuMobComProps) {
+export class AculabBaseComponent<
+  Props extends AcuMobComProps,
+  State extends AcuMobComState
+> extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
+    this.state = {
+      remoteStream: null,
+      localStream: null,
+      dtmfEnabled: false,
+      serviceName: '', // service name to call
+      webRTCToken: '',
+      client: null,
+      call: null,
+      callClientId: '', // client ID to call
+      callState: 'idle', // human readable call status
+      callOptions: {
+        constraints: { audio: false, video: false },
+        receiveAudio: false,
+        receiveVideo: false,
+      },
+      outputAudio: false,
+      mic: false,
+      outputVideo: false,
+      camera: false,
+      localVideoMuted: false,
+      remoteVideoMuted: false,
+      speakerOn: false,
+      incomingCallClientId: '',
+    } as State;
     registerGlobals();
   }
 
   /**
    * Registration must be called before the AcuMobCom component can be used!\
    * Creates AculabCloudClient object and allows incoming calls
+   * @param {string} webRTCToken optional parameter, if not provided the function uses props.webRTCToken
    */
-  async register(): Promise<void> {
+  async register(webRTCToken?: string): Promise<void> {
     if (this.state.callState === 'idle') {
-      this.setState({ webRTCToken: this.props.webRTCToken });
+      if (webRTCToken) {
+        this.setState({ webRTCToken: webRTCToken });
+      } else {
+        this.setState({ webRTCToken: this.props.webRTCToken });
+      }
       this.setState(
         {
           client: new AculabCloudClient(
@@ -105,11 +107,11 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
           if (this.state.localStream != null) {
             this.setState({ localStream: null });
           }
-          console.log('Registration complete');
+          console.log('[ AcuMobCom ]', 'Registration complete');
         }
       );
     } else {
-      console.log('the state must be idle to register');
+      console.log('[ AcuMobCom ]', 'the state must be idle to register');
     }
   }
 
@@ -117,7 +119,9 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
    * Unregister - set default state to client and webRTCToken
    */
   unregister(): void {
-    this.disableIncomingCalls();
+    if (this.state.client._transport_connected) {
+      this.disableIncomingCalls();
+    }
     this.setState({ webRTCToken: '' });
     this.setState({ client: null });
   }
@@ -129,9 +133,10 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
   callCheck(): boolean {
     var passed: boolean = false;
     if (this.state.client === null) {
-      console.log('Register the client first');
+      console.log('[ AcuMobCom ]', 'Register the client first');
     } else if (this.state.call) {
       console.log(
+        '[ AcuMobCom ]',
         'One call is in progress already (only one call at a time is permitted)'
       );
     } else {
@@ -147,7 +152,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
    */
   callClient(): void {
     if (this.state.callClientId.length === 0) {
-      console.log('enter client ID to call');
+      console.log('[ AcuMobCom ]', 'enter client ID to call');
       return;
     } else if (this.callCheck()) {
       this.setState(
@@ -157,12 +162,16 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
           this.state.callOptions.constraints = { audio: true, video: true };
           this.state.callOptions.receiveAudio = true;
           this.state.callOptions.receiveVideo = true;
-          this.state.call = this.state.client.callClient(
-            this.state.callClientId,
-            this.state.webRTCToken,
-            this.state.callOptions
+          this.setState(
+            {
+              call: this.state.client.callClient(
+                this.state.callClientId,
+                this.state.webRTCToken,
+                this.state.callOptions
+              ),
+            },
+            () => this.setupCbCallOut(this)
           );
-          this.setupCbCallOut(this);
         }
       );
     }
@@ -174,16 +183,18 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
    */
   callService(): void {
     if (this.state.serviceName.length === 0) {
-      console.log('enter service name to call');
+      console.log('[ AcuMobCom ]', 'enter service name to call');
       return;
     } else if (this.callCheck()) {
       this.setState(
         { serviceName: deleteSpaces(this.state.serviceName) },
         () => {
-          this.state.call = this.state.client.callService(
-            this.state.serviceName
+          this.setState(
+            {
+              call: this.state.client.callService(this.state.serviceName),
+            },
+            () => this.setupCbCallOut(this)
           );
-          this.setupCbCallOut(this);
         }
       );
     }
@@ -193,7 +204,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
    * Stop the current call
    */
   stopCall(): void {
-    if (this.state.call != null && this.state.call !== {}) {
+    if (this.state.call != null) {
       this.state.call.disconnect();
     }
   }
@@ -203,9 +214,15 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
    */
   swapCam(): void {
     if (this.state.remoteStream === null) {
-      console.log('swap camera allowed only when calling another client');
+      console.log(
+        '[ AcuMobCom ]',
+        'swap camera allowed only when calling another client'
+      );
     } else if (this.state.localVideoMuted) {
-      console.log('swap camera allowed only when local video is streaming');
+      console.log(
+        '[ AcuMobCom ]',
+        'swap camera allowed only when local video is streaming'
+      );
     } else {
       var stream = this.getLocalStream(); //NEVER MORE THAN ONE STREAM IN THE ARRAY
       //Assume first stream and first video track for now
@@ -375,11 +392,10 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
   /**
    * Called when incoming/outgoing call is disconnected\
    * set states\
-   * has function afterDisconnected - overwrite this function to inject your logic into callDisconnected function
    * @param {any} obj AcuMobCom object or Incoming call object
    */
   callDisconnected(obj: any) {
-    if (obj.call != null && obj.call !== {}) {
+    if (obj.call != null) {
       obj.call.disconnect();
       obj.call = null;
       obj.call_state = 'Idle - ' + obj.cause;
@@ -394,15 +410,6 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
     this.state.callOptions.constraints = { audio: false, video: false };
     this.state.callOptions.receiveAudio = false;
     this.state.callOptions.receiveVideo = false;
-    this.afterDisconnected();
-  }
-
-  /**
-   * Called within callDisconnect function\
-   * Overwrite this function to inject logic into callDisconnected function
-   */
-  afterDisconnected() {
-    // Overwrite this function to inject logic into callDisconnected
   }
 
   // onMedia CB
@@ -435,27 +442,26 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
 
   /**
    * Called when a call is connected
-   * @param {any} obj AcuMobCom object or Incoming call object
+   * @param {any} obj webrtc object from aculab-webrtc
    */
   connected(obj: any) {
     obj.call.call_state = 'Connected';
-    //Add to media event instead/also?
     this.setState({ localStream: this.getLocalStream() });
     this.setState({ remoteStream: obj.call._remote_stream });
   }
 
   /**
    * Called when error in a call occurs
-   * @param {any} obj AcuMobCom object or Incoming call object
+   * @param {any} obj webrtc object from aculab-webrtc
    */
   handleError(obj: any) {
-    console.log('***** handle error OBJ: ', obj.call);
+    console.log('[ AcuMobCom ]', 'handle error OBJ: ', obj.call);
     this.stopCall();
   }
 
   /**
    * Called when an incoming call occurs
-   * @param {any} obj AcuMobCom object or Incoming call object
+   * @param {any} obj webrtc object from aculab-webrtc
    */
   onIncoming(obj: any): void {
     this.setState({ incomingCallClientId: obj.from });
@@ -484,4 +490,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
   }
 }
 
-export default AcuMobCom;
+export default class AcuMobCom extends AculabBaseComponent<
+  AcuMobComProps,
+  AcuMobComState
+> {}
