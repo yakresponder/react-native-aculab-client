@@ -39,6 +39,7 @@ export interface AcuMobComState {
   callOptions: CallOptions;
   speakerOn: boolean;
   incomingCallClientId: string; // inbound call from client ID
+  timer?: number;
 
   // mute state
   outputAudio: boolean;
@@ -48,15 +49,29 @@ export interface AcuMobComState {
   // mute state flags
   localVideoMuted: boolean;
   remoteVideoMuted: boolean;
+}
 
+export interface AculabCallState extends AcuMobComState {
   // CallKeep
-  callUuid?: string | number[];
-  callType?: 'none' | 'client' | 'service';
-  callAnswered?: boolean;
-  incomingUUI?: boolean;
+  callUuid: string | number[];
+  callType: 'none' | 'client' | 'service';
+  callUIInteraction: 'none' | 'answered' | 'rejected';
+  incomingUI: boolean;
+  callKeepCallActive: boolean;
+  inboundCall: boolean;
+  outboundCall: boolean;
 
   // use this flag for notifications
-  connectingCall?: boolean;
+  notificationCall: boolean;
+}
+
+export interface AculabCallProps extends AcuMobComProps {
+  call?: {
+    uuid: string;
+    caller: string;
+    callee: string;
+    answered: boolean;
+  };
 }
 
 export interface WebRTCToken {
@@ -67,4 +82,11 @@ export interface WebRTCToken {
   cloudRegionId: string;
   cloudUsername: string;
   apiAccessKey: string;
+}
+
+export interface CallRecord {
+  name: string;
+  type: 'incoming' | 'outgoing' | 'missed';
+  duration: number | undefined; // in seconds
+  call: 'client' | 'service';
 }
