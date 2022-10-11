@@ -12,7 +12,7 @@ This package implements [Aculab](https://www.aculab.com/) webRTC services in the
 
 AcuMobCom is a react native component allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls.
 
-### Dependencies
+### AcuMobCom dependencies
 
 [![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
@@ -26,7 +26,11 @@ Please visit the [Example App](https://github.com/aculab-com/AcuMobCom-Example) 
 
 ---
 
-### 2. AculabCall Dependencies
+## 2. AculabCall component
+
+AculabCall is a react native component allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls and making use of react-native-callkeep package.
+
+### AculabCall dependencies
 
 [![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
