@@ -198,9 +198,7 @@ class AculabBaseClass {
    * Stop the current call
    */
   stopCall = (call = this._call) => {
-    console.log('STOP CALL', call);
-    if (call != null) {
-      console.log('STOP CALL after condition', call);
+    if (call) {
       call.disconnect();
     }
   };
