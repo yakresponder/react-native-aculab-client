@@ -1,6 +1,7 @@
 'use strict';
 
 import AcuMobCom, { getToken } from './AcuMobCom';
+import AculabBaseClass from './AcuMobComClass';
 import { deleteSpaces, showAlert } from './helpers';
 import {
   turnOnSpeaker,
@@ -11,6 +12,7 @@ import {
 import AculabCall, { initializeCallKeep } from './AculabCall';
 
 export {
+  AculabBaseClass,
   AcuMobCom,
   AculabCall,
   turnOnSpeaker,

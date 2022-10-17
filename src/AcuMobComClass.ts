@@ -1,9 +1,9 @@
 import base64 from 'react-native-base64';
-import { Component } from 'react';
+// import { Component } from 'react';
 import { registerGlobals } from 'react-native-webrtc';
 // @ts-ignore
 import { AculabCloudClient } from 'aculab-webrtc';
-import type { AcuMobComState, AcuMobComProps, WebRTCToken } from './types';
+import type { WebRTCToken } from './types';
 import { deleteSpaces, showAlert } from './helpers';
 
 /**
@@ -56,34 +56,34 @@ export const getToken = async (webRTCToken: WebRTCToken): Promise<string> => {
  * AcuMobCom is a complex component Allowing WebRTC communication using Aculab Cloud Services.
  */
 class AculabBaseClass {
-  serviceName: string;
-  remoteStream: any;
-  localStream: any;
-  dtmfEnabled: boolean;
-  // webRTCToken: string;
-  client: any; // aculabCloudClient does not have types
-  call: any;
-  callState: string;
-  callOptions: {
+  _serviceName: string;
+  _remoteStream: any;
+  _localStream: any;
+  _dtmfEnabled: boolean;
+  _webRTCToken: string;
+  _client: any; // aculabCloudClient does not have types
+  _call: any;
+  _callState: string;
+  _callOptions: {
     constraints: { audio: boolean; video: boolean };
     receiveAudio: boolean;
     receiveVideo: boolean;
   };
-  outputAudio: boolean;
-  mic: boolean;
-  outputVideo: boolean;
-  camera: boolean;
-  localVideoMuted: boolean;
-  remoteVideoMuted: boolean;
-  speakerOn: boolean;
-  incomingCallClientId: string;
+  _outputAudio: boolean;
+  _mic: boolean;
+  _outputVideo: boolean;
+  _camera: boolean;
+  _localVideoMuted: boolean;
+  _remoteVideoMuted: boolean;
+  _speakerOn: boolean;
+  _incomingCallClientId: string;
 
   constructor() {
-    this.serviceName = '';
-    this.remoteStream = null;
-    this.localStream = null;
-    this.dtmfEnabled = false;
-    // this.webRTCToken = props.webRtcToken;
+    this._serviceName = '';
+    this._remoteStream = null;
+    this._localStream = null;
+    this._dtmfEnabled = false;
+    this._webRTCToken = '';
     // this.client = new AculabCloudClient(
     //   props.cloudRegionId,
     //   props.webRTCAccessKey,
@@ -92,21 +92,21 @@ class AculabBaseClass {
     // );
     // this.client.onIncoming = this.onIncoming.bind(this);
     // this.client.enableIncoming(props.webRtcToken);
-    this.call = null;
-    this.callState = 'idle'; // human readable call status
-    this.callOptions = {
+    this._call = null;
+    this._callState = 'idle'; // human readable call status
+    this._callOptions = {
       constraints: { audio: false, video: false },
       receiveAudio: false,
       receiveVideo: false,
     };
-    this.outputAudio = false;
-    this.mic = false;
-    this.outputVideo = false;
-    this.camera = false;
-    this.localVideoMuted = false;
-    this.remoteVideoMuted = false;
-    this.speakerOn = false;
-    this.incomingCallClientId = '';
+    this._outputAudio = false;
+    this._mic = false;
+    this._outputVideo = false;
+    this._camera = false;
+    this._localVideoMuted = false;
+    this._remoteVideoMuted = false;
+    this._speakerOn = false;
+    this._incomingCallClientId = '';
     registerGlobals();
   }
 
@@ -133,11 +133,11 @@ class AculabBaseClass {
    * Unregister - set default state to client and webRTCToken
    */
   unregister = () => {
-    if (this.client) {
+    if (this._client) {
       this.disableIncomingCalls();
     }
-    this.webRTCToken = '';
-    this.client = null;
+    this._webRTCToken = '';
+    this._client = null;
   };
 
   /**
@@ -146,9 +146,9 @@ class AculabBaseClass {
    */
   callCheck = (): boolean => {
     var passed: boolean = false;
-    if (this.client === null) {
+    if (this._client === null) {
       console.log('[ AcuMobCom ]', 'Register the client first');
-    } else if (this.call) {
+    } else if (this._call) {
       console.log(
         '[ AcuMobCom ]',
         'One call is in progress already (only one call at a time is permitted)'
@@ -167,14 +167,14 @@ class AculabBaseClass {
    */
   callClient = (clientName: string) => {
     let callClientId = deleteSpaces(clientName);
-    this.callState = 'calling';
-    this.callOptions.constraints = { audio: true, video: true };
-    this.callOptions.receiveAudio = true;
-    this.callOptions.receiveVideo = true;
-    let call = this.client.callClient(
+    this._callState = 'calling';
+    this._callOptions.constraints = { audio: true, video: true };
+    this._callOptions.receiveAudio = true;
+    this._callOptions.receiveVideo = true;
+    let call = this._client.callClient(
       callClientId,
-      this.webRTCToken,
-      this.callOptions
+      this._webRTCToken,
+      this._callOptions
     );
     this.setupCb(call);
     return call;
@@ -186,9 +186,10 @@ class AculabBaseClass {
    */
   callService = (serviceName: string, client: any) => {
     if (this.callCheck() && serviceName) {
-      this.serviceName = deleteSpaces(serviceName);
-      let call = client.callService(this.serviceName);
+      this._serviceName = deleteSpaces(serviceName);
+      let call = client.callService(this._serviceName);
       this.setupCb(call);
+      this._call = call;
       return call;
     }
   };
@@ -196,9 +197,11 @@ class AculabBaseClass {
   /**
    * Stop the current call
    */
-  stopCall = () => {
-    if (this.call != null) {
-      this.call.disconnect();
+  stopCall = (call = this._call) => {
+    console.log('STOP CALL', call);
+    if (call != null) {
+      console.log('STOP CALL after condition', call);
+      call.disconnect();
     }
   };
 
@@ -206,12 +209,12 @@ class AculabBaseClass {
    * Switch between front and back camera
    */
   swapCam = () => {
-    if (this.remoteStream === null) {
+    if (this._remoteStream === null) {
       console.log(
         '[ AcuMobCom ]',
         'swap camera allowed only when calling another client'
       );
-    } else if (this.localVideoMuted) {
+    } else if (this._localVideoMuted) {
       console.log(
         '[ AcuMobCom ]',
         'swap camera allowed only when local video is streaming'
@@ -231,29 +234,29 @@ class AculabBaseClass {
    * Answer incoming call
    */
   answer = () => {
-    if (this.call !== null && this.callState === 'incoming call') {
-      this.callOptions.constraints = { audio: true, video: true };
-      this.callOptions.receiveAudio = true;
-      this.callOptions.receiveVideo = true;
-      this.call.answer(this.callOptions);
+    if (this._call !== null && this._callState === 'incoming call') {
+      this._callOptions.constraints = { audio: true, video: true };
+      this._callOptions.receiveAudio = true;
+      this._callOptions.receiveVideo = true;
+      this._call.answer(this._callOptions);
     }
   };
 
   /**
    * Reject incoming call
    */
-  reject = () => {
-    if (this.call !== null && this.callState === 'incoming call') {
-      this.call.reject();
+  reject = (call = this._call) => {
+    if (call !== null && this._callState === 'incoming call') {
+      call.reject();
     }
   };
 
   /**
    * mute audio or video - true passed for any argument mutes/disables the feature
    */
-  mute = () => {
-    if (this.call !== null && this.call !== undefined) {
-      this.call.mute(this.mic, this.outputAudio, this.camera, this.outputVideo);
+  mute = (call = this._call) => {
+    if (call !== null && call !== undefined) {
+      call.mute(this._mic, this._outputAudio, this._camera, this._outputVideo);
     }
   };
 
@@ -261,10 +264,7 @@ class AculabBaseClass {
    * Send DTMF - accepts 0-9, *, #
    * @param {string} dtmf DTMF character to be sent as a string (e.g. '5')
    */
-  sendDtmf = (dtmf: string, call: any) => {
-    console.log('sendDTMF', dtmf);
-    console.log('call', this.call);
-    console.log('sendDTMF 222', dtmf);
+  sendDtmf = (dtmf: string, call = this._call) => {
     call.sendDtmf(dtmf);
   };
 
@@ -320,7 +320,7 @@ class AculabBaseClass {
       this.gotMedia(obj2);
     }.bind(this);
     call.onConnecting = function (this: AculabBaseClass) {
-      this.callState = 'connecting';
+      this._callState = 'connecting';
       this.onConnecting();
     }.bind(this);
     call.onConnected = function (this: AculabBaseClass, obj2: any) {
@@ -349,32 +349,32 @@ class AculabBaseClass {
    * Set state of local video mute to true
    */
   onLocalVideoMuteCB = () => {
-    this.localVideoMuted = true;
+    this._localVideoMuted = true;
   };
 
   /**
    * Set state of local video mute to false
    */
   onLocalVideoUnMuteCB = () => {
-    this.localVideoMuted = false;
+    this._localVideoMuted = false;
   };
 
   /**
    * Set state of remote video mute to true
    */
   onRemoteVideoMuteCB = () => {
-    this.remoteVideoMuted = true;
+    this._remoteVideoMuted = true;
   };
 
   /**
    * Set state of remote video mute to false
    */
   onRemoteVideoUnMuteCB = () => {
-    this.remoteVideoMuted = false;
+    this._remoteVideoMuted = false;
   };
 
   outboundRinging = () => {
-    this.callState = 'ringing';
+    this._callState = 'ringing';
   };
 
   /**
@@ -391,15 +391,15 @@ class AculabBaseClass {
         showAlert('', 'The Client/Service is Unreachable');
       }
     }
-    this.call = null;
-    this.incomingCallClientId = '';
-    this.localVideoMuted = false;
-    this.remoteVideoMuted = false;
-    this.callState = 'idle';
-    this.remoteStream = null;
-    this.callOptions.constraints = { audio: false, video: false };
-    this.callOptions.receiveAudio = false;
-    this.callOptions.receiveVideo = false;
+    this._call = null;
+    this._incomingCallClientId = '';
+    this._localVideoMuted = false;
+    this._remoteVideoMuted = false;
+    this._callState = 'idle';
+    this._remoteStream = null;
+    this._callOptions.constraints = { audio: false, video: false };
+    this._callOptions.receiveAudio = false;
+    this._callOptions.receiveVideo = false;
   };
 
   // onMedia CB
@@ -407,18 +407,18 @@ class AculabBaseClass {
     if (obj.call !== null) {
       if (obj.call.stream !== undefined && obj.call.stream !== null) {
         obj.call.gotremotestream = true;
-        this.remoteStream = obj.stream;
+        this._remoteStream = obj.stream;
       }
     } else {
       if (obj.gotremotestream) {
         obj.gotremotestream = false;
       }
     }
-    this.callState = 'got media';
-    this.localVideoMuted = false;
-    this.remoteVideoMuted = false;
-    this.camera = false;
-    this.mic = false;
+    this._callState = 'got media';
+    this._localVideoMuted = false;
+    this._remoteVideoMuted = false;
+    this._camera = false;
+    this._mic = false;
   };
 
   /**
@@ -427,7 +427,7 @@ class AculabBaseClass {
    */
   getLocalStream = () => {
     var lStream =
-      this.call._session.sessionDescriptionHandler._peerConnection.getLocalStreams();
+      this._call._session.sessionDescriptionHandler._peerConnection.getLocalStreams();
     return lStream[0];
   };
 
@@ -437,9 +437,9 @@ class AculabBaseClass {
    */
   connected = (obj: any) => {
     obj.call.call_state = 'Connected';
-    this.callState = 'connected';
-    this.localStream = this.getLocalStream();
-    this.remoteStream = obj.call._remote_stream;
+    this._callState = 'connected';
+    this._localStream = this.getLocalStream();
+    this._remoteStream = obj.call._remote_stream;
   };
 
   /**
@@ -447,7 +447,7 @@ class AculabBaseClass {
    * @param {any} obj webrtc object from aculab-webrtc
    */
   handleError = (obj: any) => {
-    this.callState = 'error';
+    this._callState = 'error';
     console.log('[ AcuMobCom ]', 'handle error OBJ: ', obj.call);
     this.stopCall();
   };
@@ -457,9 +457,9 @@ class AculabBaseClass {
    * @param {any} obj webrtc object from aculab-webrtc
    */
   onIncoming = (obj: any) => {
-    this.incomingCallClientId = obj.from;
+    this._incomingCallClientId = obj.from;
     let call = obj.call;
-    this.callState = 'incoming call';
+    this._callState = 'incoming call';
     this.setupCb(call);
     this.onIncomingCall(obj);
   };
@@ -468,19 +468,15 @@ class AculabBaseClass {
    * Disable incoming all calls
    */
   disableIncomingCalls = () => {
-    this.client.disableIncoming();
+    this._client.disableIncoming();
   };
 
   /**
    * Refresh WebRTC Token and enable incoming calls
    * @param {string} webRTCToken Optional parameter, if not provided the function uses default parameter this.state.webRTCToken
    */
-  enableIncomingCalls = (webRTCToken?: string) => {
-    if (webRTCToken) {
-      this.client.enableIncoming(webRTCToken);
-    } else {
-      this.client.enableIncoming(this.webRTCToken);
-    }
+  enableIncomingCalls = (webRTCToken = this._webRTCToken) => {
+    this._client.enableIncoming(webRTCToken);
   };
 }
 
