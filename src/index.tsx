@@ -1,7 +1,7 @@
 'use strict';
 
 import AcuMobCom, { getToken } from './AcuMobCom';
-import AculabBaseClass from './AcuMobComClass';
+import AculabBaseClass from './AculabBaseClass';
 import { deleteSpaces, showAlert } from './helpers';
 import {
   turnOnSpeaker,

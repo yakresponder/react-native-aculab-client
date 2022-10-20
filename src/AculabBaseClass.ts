@@ -1,54 +1,13 @@
-import base64 from 'react-native-base64';
-// import { Component } from 'react';
 import { registerGlobals } from 'react-native-webrtc';
 // @ts-ignore
 import { AculabCloudClient } from 'aculab-webrtc';
-import type { WebRTCToken } from './types';
 import { deleteSpaces, showAlert } from './helpers';
-
-/**
- * Get WebRTC token for registration.\
- * The token has limited lifetime, it can be refreshed by calling .enableIncoming(token) on AculabCloudClient object.
- * @param {WebRTCToken} webRTCToken - A WebRTCToken object
- * @returns {string} WebRTC Token string
- */
-export const getToken = async (webRTCToken: WebRTCToken): Promise<string> => {
-  let url =
-    'https://ws-' +
-    webRTCToken.cloudRegionId +
-    '.aculabcloud.net/webrtc_generate_token?client_id=' +
-    webRTCToken.registerClientId +
-    '&ttl=' +
-    webRTCToken.tokenLifeTime +
-    '&enable_incoming=' +
-    webRTCToken.enableIncomingCall +
-    '&call_client=' +
-    webRTCToken.callClientRange;
-  let username = webRTCToken.cloudRegionId + '/' + webRTCToken.cloudUsername;
-  var regToken = fetch(url, {
-    method: 'GET',
-    body: '',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization':
-        'Basic ' + base64.encode(username + ':' + webRTCToken.apiAccessKey),
-    },
-  })
-    .then((response) => {
-      var stuff = response.json();
-      return stuff;
-    })
-    .then((token) => {
-      return String(token.token);
-    });
-  return regToken;
-};
 
 /**
  * AcuMobCom is a complex component Allowing WebRTC communication using Aculab Cloud Services.
  */
 class AculabBaseClass {
-  _serviceName: string;
+  _callServiceName: string;
   _callClientName: string;
   _remoteStream: any;
   _localStream: any;
@@ -72,7 +31,7 @@ class AculabBaseClass {
   _incomingCallClientId: string;
 
   constructor() {
-    this._serviceName = '';
+    this._callServiceName = '';
     this._callClientName = '';
     this._remoteStream = null;
     this._localStream = null;
@@ -96,18 +55,15 @@ class AculabBaseClass {
     registerGlobals();
   }
 
-  set client(client: any) {
-    this._client = client;
-  }
-
-  set webRTCToken(webRTCToken: string) {
-    this._webRTCToken = webRTCToken;
-  }
-
-  set call(call: any) {
-    this._call = call;
-  }
-
+  /**
+   * Create new aculab cloud client with credentials according to the parameters
+   * @param {string} cloudRegionId
+   * @param {string} webRTCAccessKey
+   * @param {string} registerClientId
+   * @param {string | number} logLevel
+   * @param {string} webRtcToken
+   * @returns {any} new instance of aculab cloud client class
+   */
   register = async (
     cloudRegionId: string,
     webRTCAccessKey: string,
@@ -158,9 +114,11 @@ class AculabBaseClass {
   };
 
   /**
-   * Start calling client\
-   * Set callState
-   * @returns {void}
+   * deletes white spaces from clientName parameter, saves it to AculabBaseClass._callClientName
+   * saves call object to AculabBaseClass._call
+   * @param {string} clientName id of client to call
+   * @param {any} client optional client object (default is AculabBaseClass._client)
+   * @returns  call object
    */
   callClient = (clientName: string, client = this._client) => {
     if (this.callCheck() && clientName) {
@@ -175,27 +133,32 @@ class AculabBaseClass {
         this._callOptions
       );
       this.setupCb(call);
-      this.call = call;
+      this._call = call;
       return call;
     }
   };
 
   /**
-   * Start calling service\
-   * @returns {void}
+   * deletes white spaces from clientName parameter, saves it to AculabBaseClass._callServiceName
+   * saves call object to AculabBaseClass._call
+   * @param {string} serviceName id of service to call
+   * @param {any} client optional client object (default is AculabBaseClass._client)
+   * @returns call object
    */
   callService = (serviceName: string, client = this._client) => {
     if (this.callCheck() && serviceName) {
-      this._serviceName = deleteSpaces(serviceName);
-      let call = client.callService(this._serviceName);
+      this._callServiceName = deleteSpaces(serviceName);
+      let call = client.callService(this._callServiceName);
       this.setupCb(call);
-      this.call = call;
+      this._call = call;
       return call;
     }
   };
 
   /**
-   * Stop the current call
+   * stops the call from parameter if parameter is not provided
+   * it stops the call from AculabBaseClass._call
+   * @param call optional call object
    */
   stopCall = (call = this._call) => {
     if (call) {
@@ -229,7 +192,9 @@ class AculabBaseClass {
   };
 
   /**
-   * Answer incoming call
+   * Answer the call from parameter if parameter is not provided
+   * it answers the call from AculabBaseClass._call
+   * @param call optional call object
    */
   answer = (call = this._call) => {
     if (call !== null && this._callState === 'incoming call') {
@@ -241,7 +206,9 @@ class AculabBaseClass {
   };
 
   /**
-   * Reject incoming call
+   * Reject the call from parameter if parameter is not provided
+   * it rejects the call from AculabBaseClass._call
+   * @param call optional call object
    */
   reject = (call = this._call) => {
     if (call !== null && this._callState === 'incoming call') {
@@ -249,6 +216,7 @@ class AculabBaseClass {
     }
   };
 
+  // TODO this doesn't make sense, pay attention here!
   /**
    * mute audio or video - true passed for any argument mutes/disables the feature
    */
@@ -261,6 +229,7 @@ class AculabBaseClass {
   /**
    * Send DTMF - accepts 0-9, *, #
    * @param {string} dtmf DTMF character to be sent as a string (e.g. '5')
+   * @param call optional call object
    */
   sendDtmf = (dtmf: string, call = this._call) => {
     call.sendDtmf(dtmf);
@@ -322,7 +291,7 @@ class AculabBaseClass {
 
   /**
    * Handle communication for outgoing call
-   * @param {AculabBaseClass} obj AcuMobCall object
+   * @param call call object
    */
   setupCb = (call: any) => {
     call.onDisconnect = function (this: AculabBaseClass, obj2: any) {
@@ -366,14 +335,16 @@ class AculabBaseClass {
     }.bind(this);
   };
 
+  /**
+   * Set AculabBaseClass._callState to 'ringing'
+   */
   outboundRinging = () => {
     this._callState = 'ringing';
   };
 
   /**
-   * Called when incoming/outgoing call is disconnected\
-   * set states\
-   * @param {any} obj AcuMobCom object or Incoming call object
+   * Called when incoming/outgoing call is disconnected
+   * @param {any} obj remote call object
    */
   callDisconnected = (obj: any) => {
     if (obj.call != null) {
@@ -384,7 +355,7 @@ class AculabBaseClass {
         showAlert('', 'The Client/Service is Unreachable');
       }
     }
-    this.call = null;
+    this._call = null;
     this._incomingCallClientId = '';
     this._localVideoMuted = false;
     this._remoteVideoMuted = false;
@@ -396,6 +367,10 @@ class AculabBaseClass {
   };
 
   // onMedia CB
+  /**
+   * called when gotMedia from Aculab cloud client
+   * @param {any} obj remote call object
+   */
   gotMedia = (obj: any) => {
     if (obj.call !== null) {
       if (obj.call.stream !== undefined && obj.call.stream !== null) {
@@ -454,26 +429,23 @@ class AculabBaseClass {
     let call = obj.call;
     this._callState = 'incoming call';
     this.setupCb(call);
-    this.call = call;
+    this._call = call;
     this.onIncomingCall(obj);
   };
 
   /**
    * Disable incoming all calls
    */
-  disableIncomingCalls = (client = this._client) => {
-    client.disableIncoming();
+  disableIncomingCalls = () => {
+    this._client.disableIncoming();
   };
 
   /**
    * Refresh WebRTC Token and enable incoming calls
    * @param {string} webRTCToken Optional parameter, if not provided the function uses default parameter this.state.webRTCToken
    */
-  enableIncomingCalls = (
-    webRTCToken = this._webRTCToken,
-    client = this._client
-  ) => {
-    client.enableIncoming(webRTCToken);
+  enableIncomingCalls = (webRTCToken: string) => {
+    this._client.enableIncoming(webRTCToken);
   };
 }
 
