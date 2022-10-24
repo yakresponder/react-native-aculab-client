@@ -11,7 +11,6 @@ class AculabBaseClass {
   _callClientName: string;
   _remoteStream: any;
   _localStream: any;
-  _dtmfEnabled: boolean;
   _webRTCToken: string;
   _client: any; // aculabCloudClient does not have types
   _call: any;
@@ -27,7 +26,6 @@ class AculabBaseClass {
   _camera: boolean;
   _localVideoMuted: boolean;
   _remoteVideoMuted: boolean;
-  _speakerOn: boolean;
   _incomingCallClientId: string;
 
   constructor() {
@@ -35,7 +33,6 @@ class AculabBaseClass {
     this._callClientName = '';
     this._remoteStream = null;
     this._localStream = null;
-    this._dtmfEnabled = false;
     this._webRTCToken = '';
     this._call = null;
     this._callState = 'idle'; // human readable call status
@@ -50,7 +47,6 @@ class AculabBaseClass {
     this._camera = false;
     this._localVideoMuted = false;
     this._remoteVideoMuted = false;
-    this._speakerOn = false;
     this._incomingCallClientId = '';
     registerGlobals();
   }
@@ -236,56 +232,56 @@ class AculabBaseClass {
   };
 
   /**
-   * overwrite this function to insert logic when WebRTC is ringing
+   * Overwrite this function to insert logic when WebRTC is ringing
    */
   onRinging = () => {};
 
   /**
-   * overwrite or extend this function to insert logic when WebRTC has incoming call
+   * Overwrite or extend this function to insert logic when WebRTC has incoming call
    * @param _obj incoming call object
    */
   onIncomingCall = (_obj: any) => {};
 
   /**
-   * overwrite this function to insert logic when WebRTC state is gotMedia
+   * Overwrite this function to insert logic when WebRTC state is gotMedia
    * @param _obj call object
    */
   onGotMedia = (_obj: any) => {};
 
   /**
-   * overwrite this function to insert logic when WebRTC is connecting call
+   * Overwrite this function to insert logic when WebRTC is connecting call
    */
   onConnecting = () => {};
 
   /**
-   * overwrite this function to insert logic when WebRTC connected call
+   * Overwrite this function to insert logic when WebRTC connected call
    * @param _obj call object
    */
   onConnected = (_obj: any) => {};
 
   /**
-   * overwrite this function to insert logic when WebRTC disconnected call
+   * Overwrite this function to insert logic when WebRTC disconnected call
    * @param _obj call object
    */
   onDisconnected = (_obj: any) => {};
 
   /**
-   * overwrite this function to insert logic when local video is muted
+   * Overwrite this function to insert logic when local video is muted
    */
   onLocalVideoMute = () => {};
 
   /**
-   * overwrite this function to insert logic when local video is unmuted
+   * Overwrite this function to insert logic when local video is unmuted
    */
   onLocalVideoUnmute = () => {};
 
   /**
-   * overwrite this function to insert logic when remote video is muted
+   * Overwrite this function to insert logic when remote video is muted
    */
   onRemoteVideoMute = () => {};
 
   /**
-   * overwrite this function to insert logic when remote video is unmuted
+   * Overwrite this function to insert logic when remote video is unmuted
    */
   onRemoteVideoUnmute = () => {};
 
