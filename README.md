@@ -48,7 +48,7 @@ Please visit the [Example App](https://github.com/aculab-com/AcuMobCom-Example) 
 
 AculabCall is a react native *class component* allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls with additional features provided by react-native-callkeep package.
 
-## 3. AculabCall dependencies
+### AculabCall dependencies
 
 [![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
