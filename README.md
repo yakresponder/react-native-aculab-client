@@ -12,7 +12,7 @@ This package implements [Aculab](https://www.aculab.com/) webRTC services in the
 
 AculabBaseClass is a Aculab WebRTC class developed for react native to be used in in *class component* or *function component* allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls.
 
-### AculabBaseClass Dependencies
+### AculabBaseClass dependencies
 
 [![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
@@ -26,11 +26,11 @@ Please visit the [Example App](https://github.com/aculab-com/AculabBaseClass-AMC
 
 ---
 
-## 2. AcuMobCom component
+## 2. AcuMobCom class component
 
 AcuMobCom is a react native *class component* allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls.
 
-### Dependencies
+### AcuMobCom dependencies
 
 [![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
@@ -44,9 +44,11 @@ Please visit the [Example App](https://github.com/aculab-com/AcuMobCom-Example) 
 
 ---
 
-### 3. AculabCall Dependencies
+## 2. AculabCall class component
 
 AculabCall is a react native *class component* allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls with additional features provided by react-native-callkeep package.
+
+## 3. AculabCall dependencies
 
 [![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
