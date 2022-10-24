@@ -8,9 +8,27 @@ This package implements [Aculab](https://www.aculab.com/) webRTC services in the
 
 ---
 
-## 1. AcuMobCom component
+## 1. AculabBaseClass
 
-AcuMobCom is a react native component allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls.
+AculabBaseClass is a Aculab WebRTC class developed for react native to be used in in *class component* or *function component* allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls.
+
+### AculabBaseClass Dependencies
+
+[![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
+[![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
+[![react-native-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
+
+AculabBaseClass [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AculabBaseClass-README.md)
+
+Please visit the [Example App](https://github.com/aculab-com/AculabBaseClass-AMC-example) to see it being used in practice.
+
+[AculabBaseClass Example app README](https://github.com/aculab-com/AculabBaseClass-AMC-example/blob/main/README.md)
+
+---
+
+## 2. AcuMobCom component
+
+AcuMobCom is a react native *class component* allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls.
 
 ### Dependencies
 
@@ -26,7 +44,9 @@ Please visit the [Example App](https://github.com/aculab-com/AcuMobCom-Example) 
 
 ---
 
-### 2. AculabCall Dependencies
+### 3. AculabCall Dependencies
+
+AculabCall is a react native *class component* allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls with additional features provided by react-native-callkeep package.
 
 [![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
