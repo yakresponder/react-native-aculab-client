@@ -1,48 +1,9 @@
-import base64 from 'react-native-base64';
 import { Component } from 'react';
 import { registerGlobals } from 'react-native-webrtc';
 // @ts-ignore
 import { AculabCloudClient } from 'aculab-webrtc';
-import type { AcuMobComState, AcuMobComProps, WebRTCToken } from './types';
+import type { AcuMobComState, AcuMobComProps } from './types';
 import { deleteSpaces, showAlert } from './helpers';
-
-/**
- * Get WebRTC token for registration.\
- * The token has limited lifetime, it can be refreshed by calling .enableIncoming(token) on AculabCloudClient object.
- * @param {WebRTCToken} webRTCToken - A WebRTCToken object
- * @returns {string} WebRTC Token string
- */
-export const getToken = async (webRTCToken: WebRTCToken): Promise<string> => {
-  let url =
-    'https://ws-' +
-    webRTCToken.cloudRegionId +
-    '.aculabcloud.net/webrtc_generate_token?client_id=' +
-    webRTCToken.registerClientId +
-    '&ttl=' +
-    webRTCToken.tokenLifeTime +
-    '&enable_incoming=' +
-    webRTCToken.enableIncomingCall +
-    '&call_client=' +
-    webRTCToken.callClientRange;
-  let username = webRTCToken.cloudRegionId + '/' + webRTCToken.cloudUsername;
-  var regToken = fetch(url, {
-    method: 'GET',
-    body: '',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization':
-        'Basic ' + base64.encode(username + ':' + webRTCToken.apiAccessKey),
-    },
-  })
-    .then((response) => {
-      var stuff = response.json();
-      return stuff;
-    })
-    .then((token) => {
-      return String(token.token);
-    });
-  return regToken;
-};
 
 /**
  * AcuMobCom is a complex component Allowing WebRTC communication using Aculab Cloud Services.

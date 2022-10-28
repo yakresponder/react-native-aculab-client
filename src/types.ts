@@ -74,7 +74,7 @@ export interface AculabCallProps extends AcuMobComProps {
   };
 }
 
-export interface WebRTCToken {
+export interface WebRTCTokenProps {
   registerClientId: string;
   tokenLifeTime: number; //time(ms)
   enableIncomingCall: boolean;

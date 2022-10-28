@@ -6,14 +6,14 @@ import { deleteSpaces, showAlert } from './helpers';
 /**
  * AcuMobCom is a complex component Allowing WebRTC communication using Aculab Cloud Services.
  */
-class AculabBaseClass {
+export class AculabBaseClass {
   _callServiceName: string;
   _callClientName: string;
   _remoteStream: any;
   _localStream: any;
   _webRTCToken: string;
   _client: any; // aculabCloudClient does not have types
-  _call: any;
+  _activeCall: any;
   _callState: string;
   _callOptions: {
     constraints: { audio: boolean; video: boolean };
@@ -26,6 +26,7 @@ class AculabBaseClass {
   _camera: boolean;
   _localVideoMuted: boolean;
   _remoteVideoMuted: boolean;
+  _speakerOn: boolean;
   _incomingCallClientId: string;
 
   constructor() {
@@ -34,12 +35,12 @@ class AculabBaseClass {
     this._remoteStream = null;
     this._localStream = null;
     this._webRTCToken = '';
-    this._call = null;
+    this._activeCall = null;
     this._callState = 'idle'; // human readable call status
     this._callOptions = {
-      constraints: { audio: false, video: false },
-      receiveAudio: false,
-      receiveVideo: false,
+      constraints: { audio: true, video: true },
+      receiveAudio: true,
+      receiveVideo: true,
     };
     this._outputAudio = false;
     this._mic = false;
@@ -47,6 +48,7 @@ class AculabBaseClass {
     this._camera = false;
     this._localVideoMuted = false;
     this._remoteVideoMuted = false;
+    this._speakerOn = false;
     this._incomingCallClientId = '';
     registerGlobals();
   }
@@ -74,6 +76,7 @@ class AculabBaseClass {
       logLevel,
       webRtcToken
     );
+    this._webRTCToken = webRtcToken;
     newClient.onIncoming = this.onIncoming.bind(this);
     newClient.enableIncoming(webRtcToken);
     return newClient;
@@ -98,7 +101,7 @@ class AculabBaseClass {
     var passed: boolean = false;
     if (this._client === null) {
       console.log('[ AcuMobCom ]', 'Register the client first');
-    } else if (this._call) {
+    } else if (this._activeCall) {
       console.log(
         '[ AcuMobCom ]',
         'One call is in progress already (only one call at a time is permitted)'
@@ -111,52 +114,49 @@ class AculabBaseClass {
 
   /**
    * deletes white spaces from clientName parameter, saves it to AculabBaseClass._callClientName
-   * saves call object to AculabBaseClass._call
+   * saves call object to AculabBaseClass._activeCall
    * @param {string} clientName id of client to call
    * @param {any} client optional client object (default is AculabBaseClass._client)
    * @returns  call object
    */
-  callClient = (clientName: string, client = this._client) => {
+  callClient = (clientName: string) => {
     if (this.callCheck() && clientName) {
       this._callClientName = deleteSpaces(clientName);
       this._callState = 'calling';
-      this._callOptions.constraints = { audio: true, video: true };
-      this._callOptions.receiveAudio = true;
-      this._callOptions.receiveVideo = true;
-      let call = client.callClient(
+      let call = this._client.callClient(
         this._callClientName,
         this._webRTCToken,
         this._callOptions
       );
       this.setupCb(call);
-      this._call = call;
+      this._activeCall = call;
       return call;
     }
   };
 
   /**
    * deletes white spaces from clientName parameter, saves it to AculabBaseClass._callServiceName
-   * saves call object to AculabBaseClass._call
+   * saves call object to AculabBaseClass._activeCall
    * @param {string} serviceName id of service to call
    * @param {any} client optional client object (default is AculabBaseClass._client)
    * @returns call object
    */
-  callService = (serviceName: string, client = this._client) => {
+  callService = (serviceName: string) => {
     if (this.callCheck() && serviceName) {
       this._callServiceName = deleteSpaces(serviceName);
-      let call = client.callService(this._callServiceName);
+      let call = this._client.callService(this._callServiceName);
       this.setupCb(call);
-      this._call = call;
+      this._activeCall = call;
       return call;
     }
   };
 
   /**
    * stops the call from parameter if parameter is not provided
-   * it stops the call from AculabBaseClass._call
+   * it stops the call from AculabBaseClass._activeCall
    * @param call optional call object
    */
-  stopCall = (call = this._call) => {
+  stopCall = (call = this._activeCall) => {
     if (call) {
       call.disconnect();
     }
@@ -189,24 +189,21 @@ class AculabBaseClass {
 
   /**
    * Answer the call from parameter if parameter is not provided
-   * it answers the call from AculabBaseClass._call
+   * it answers the call from AculabBaseClass._activeCall
    * @param call optional call object
    */
-  answer = (call = this._call) => {
+  answer = (call = this._activeCall) => {
     if (call !== null && this._callState === 'incoming call') {
-      this._callOptions.constraints = { audio: true, video: true };
-      this._callOptions.receiveAudio = true;
-      this._callOptions.receiveVideo = true;
       call.answer(this._callOptions);
     }
   };
 
   /**
    * Reject the call from parameter if parameter is not provided
-   * it rejects the call from AculabBaseClass._call
+   * it rejects the call from AculabBaseClass._activeCall
    * @param call optional call object
    */
-  reject = (call = this._call) => {
+  reject = (call = this._activeCall) => {
     if (call !== null && this._callState === 'incoming call') {
       call.reject();
     }
@@ -216,7 +213,7 @@ class AculabBaseClass {
   /**
    * mute audio or video - true passed for any argument mutes/disables the feature
    */
-  mute = (call = this._call) => {
+  mute = (call = this._activeCall) => {
     if (call !== null && call !== undefined) {
       call.mute(this._mic, this._outputAudio, this._camera, this._outputVideo);
     }
@@ -227,61 +224,61 @@ class AculabBaseClass {
    * @param {string} dtmf DTMF character to be sent as a string (e.g. '5')
    * @param call optional call object
    */
-  sendDtmf = (dtmf: string, call = this._call) => {
+  sendDtmf = (dtmf: string, call = this._activeCall) => {
     call.sendDtmf(dtmf);
   };
 
   /**
-   * Overwrite this function to insert logic when WebRTC is ringing
+   * overwrite this function to insert logic when WebRTC is ringing
    */
   onRinging = () => {};
 
   /**
-   * Overwrite or extend this function to insert logic when WebRTC has incoming call
+   * overwrite or extend this function to insert logic when WebRTC has incoming call
    * @param _obj incoming call object
    */
   onIncomingCall = (_obj: any) => {};
 
   /**
-   * Overwrite this function to insert logic when WebRTC state is gotMedia
+   * overwrite this function to insert logic when WebRTC state is gotMedia
    * @param _obj call object
    */
   onGotMedia = (_obj: any) => {};
 
   /**
-   * Overwrite this function to insert logic when WebRTC is connecting call
+   * overwrite this function to insert logic when WebRTC is connecting call
    */
   onConnecting = () => {};
 
   /**
-   * Overwrite this function to insert logic when WebRTC connected call
+   * overwrite this function to insert logic when WebRTC connected call
    * @param _obj call object
    */
   onConnected = (_obj: any) => {};
 
   /**
-   * Overwrite this function to insert logic when WebRTC disconnected call
+   * overwrite this function to insert logic when WebRTC disconnected call
    * @param _obj call object
    */
   onDisconnected = (_obj: any) => {};
 
   /**
-   * Overwrite this function to insert logic when local video is muted
+   * overwrite this function to insert logic when local video is muted
    */
   onLocalVideoMute = () => {};
 
   /**
-   * Overwrite this function to insert logic when local video is unmuted
+   * overwrite this function to insert logic when local video is unmuted
    */
   onLocalVideoUnmute = () => {};
 
   /**
-   * Overwrite this function to insert logic when remote video is muted
+   * overwrite this function to insert logic when remote video is muted
    */
   onRemoteVideoMute = () => {};
 
   /**
-   * Overwrite this function to insert logic when remote video is unmuted
+   * overwrite this function to insert logic when remote video is unmuted
    */
   onRemoteVideoUnmute = () => {};
 
@@ -351,15 +348,12 @@ class AculabBaseClass {
         showAlert('', 'The Client/Service is Unreachable');
       }
     }
-    this._call = null;
+    this._activeCall = null;
     this._incomingCallClientId = '';
     this._localVideoMuted = false;
     this._remoteVideoMuted = false;
     this._callState = 'idle';
     this._remoteStream = null;
-    this._callOptions.constraints = { audio: false, video: false };
-    this._callOptions.receiveAudio = false;
-    this._callOptions.receiveVideo = false;
   };
 
   // onMedia CB
@@ -391,7 +385,7 @@ class AculabBaseClass {
    */
   getLocalStream = () => {
     var lStream =
-      this._call._session.sessionDescriptionHandler._peerConnection.getLocalStreams();
+      this._activeCall._session.sessionDescriptionHandler._peerConnection.getLocalStreams();
     return lStream[0];
   };
 
@@ -425,7 +419,7 @@ class AculabBaseClass {
     let call = obj.call;
     this._callState = 'incoming call';
     this.setupCb(call);
-    this._call = call;
+    this._activeCall = call;
     this.onIncomingCall(obj);
   };
 
