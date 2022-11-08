@@ -2,21 +2,22 @@
 
 import AcuMobCom from './AcuMobCom';
 import AculabBaseClass from './AculabBaseClass';
-import AculabCallClass from './AculabCallClass';
 import { deleteSpaces, showAlert, getToken } from './helpers';
 import {
   turnOnSpeaker,
   isSpeakerphoneOn,
   incomingCallNotification,
   cancelIncomingCallNotification,
+  aculabClientEvent,
 } from './AculabClientModule';
 import AculabCall, { initializeCallKeep } from './AculabCall';
+import Counter from './Counter';
 
 export {
   AculabBaseClass,
-  AculabCallClass,
   AcuMobCom,
   AculabCall,
+  Counter,
   turnOnSpeaker,
   isSpeakerphoneOn,
   getToken,
@@ -25,4 +26,5 @@ export {
   incomingCallNotification,
   cancelIncomingCallNotification,
   initializeCallKeep,
+  aculabClientEvent,
 };
