@@ -281,10 +281,116 @@ import {deleteSpaces, showAlert, getToken, turnOnSpeaker} from 'react-native-acu
 
 | Function                                  | Returns   | Description                               |
 |---                                        | ---       | ---                                       |
-| getToken({registerClientId: string, tokenLifeTime: number, enableIncomingCall: boolean, callClientRange: string, cloudRegionId: string, cloudUsername: string, apiAccessKey: string})        | string    | Get WebRTC Token for Aculab cloud client registration. **This should be done on server side**    |
+| getToken({registerClientId: string, tokenLifeTime: number, enableIncomingCall: boolean, callClientRange: string, cloudRegionId: string, cloudUsername: string, apiAccessKey: string})                      | string    | Get WebRTC Token for Aculab cloud client registration. **This should be done on server side**    |
 | deleteSpaces(string)                      | string    | returns string without white spaces       |
 | showAlert(title: string, message: string) |           | displays alert message                    |
 | turnOnSpeaker(boolean)                    |           | pass true to turn ON the external audio set or false to turn it OFF.  |
+
+Helper class Counter can be user for creating last call object, for example you may want to log call history in your app, so you may want to create call object holding information about last call to be logged etc. Counter class helps you to do that.  
+See example bellow:
+
+```ts
+import {AculabBaseClass, Counter} from 'react-native-aculab-client';
+
+const counter = Counter
+
+/**
+ * Android only\
+ * Log call after ended to Call Log (History).
+ * @param {typeof Counter} counter instance of counter class
+ * @param {CallType} callType to be logged
+ * @param {string} incomingCallClientId to be logged
+ * @param {string} callClientId to be logged
+ * @param {string} callServiceId to be logged
+ * @returns {CallRecord} call record object
+ */
+const createLastCallObject = (
+  counter: typeof Counter,
+  callType: CallType,
+  callingId: string,
+) => {
+  let callTime = counter.stopCounter();
+  let lastCall: CallRecord | undefined;
+
+  if (inboundCall) {
+    if (callTime === 0) {
+      lastCall = {
+        name: callingId,
+        action: 'missed',
+        duration: callTime,
+        type: callType,
+      };
+    } else {
+      lastCall = {
+        name: callingId,
+        action: 'incoming',
+        duration: callTime,
+        type: callType,
+      };
+    }
+  } else {
+    lastCall = {
+      name: callingId,
+      action: 'outgoing',
+      duration: callTime,
+      type: callType,
+    };
+  }
+  counter.resetCounter();
+  return lastCall;
+};
+
+AculabBaseClass.onConnected = function (obj) {
+  setWebRTCState('connected');
+  counter.startCounter();
+};
+
+AculabBaseClass.onDisconnected = function () {
+  const lastCall = createLastCallObject(
+    counter,
+    callType,
+    callingId,
+  );
+  showAlert(
+    'Last Call',
+    `Duration: ${lastCall?.duration}s \nCall type: ${lastCall?.type} \nCalling: ${lastCall?.name} \nAction: ${lastCall?.action}`,
+  );
+  setWebRTCState('idle');
+};
+
+```
+
+Android
+
+```ts
+import {incomingCallNotification, cancelIncomingCallNotification, aculabClientEvent} from 'react-native-aculab-client';
+```
+
+| Function                                  | Returns   | Description                               |
+|---                                        | ---       | ---                                       |
+| incomingCallNotification(uuid: string, channelId: string, channelName: string, channelDescription: string, contentText: string, notificationId: number)                     |           | Displays incoming call notification UI - Android ONLY|
+| cancelIncomingCallNotification()          |           | cancels incoming call notification UI if displayed - Android ONLY       |
+
+| event               | listener option     | Returns   | Description                               |
+|---                  | ---                 | ---       | ---                                       |
+| aculabClientEvent   | rejectedCallAndroid | payload   | called when call rejected in incoming call notification UI - Android ONLY       |
+|                     | answeredCallAndroid | payload   | called when call accepted in incoming call notification UI - Android ONLY       |
+
+example of use
+
+```ts
+// Create listener
+let androidListenerA = aculabClientEvent.addListener(
+  'rejectedCallAndroid',
+  (_payload) => {
+    // Do action on listener
+    rejectedCallAndroid(_payload);
+  }
+);
+
+// Remove listener
+androidListenerA.remove();
+```
 
 ## License
 
