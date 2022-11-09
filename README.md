@@ -6,7 +6,11 @@ This package implements [Aculab](https://www.aculab.com/) webRTC services in the
 [![npm_package](https://img.shields.io/npm/v/react-native-aculab-client?color=green)](https://www.npmjs.com/package/react-native-aculab-client)
 [![license](https://img.shields.io/npm/l/react-native-aculab-client)](https://github.com/aculab-com/react-native-aculab-client/blob/main/LICENSE)
 
-This package holds the AculabBaseClass, that is ideal for coding your own function or class components. Also for less coding there is class component AcuMobCom that provides all you need  for basic call with minimal requirements. As class component it holds all states therefore is less flexible than function component you can make yourself but it work out of the box. Similarly, there is AculabCall class component that on top of basic functionality makes use of [react-native-callkeep](https://github.com/react-native-webrtc/react-native-callkeep) package.
+This package holds
+
+- [AculabBaseClass](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#1-aculabbaseclass) that is ideal for coding your own function or class components.
+- [AcuMobCom](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#2-acumobcom-class-component) class component that provides all you need for basic call with minimal requirements. As class component it holds all states therefore is less flexible than function component you can make yourself but it work out of the box.
+- [AculabCall](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#3-aculabcall-class-component) class component that on top of basic functionality makes use of [react-native-callkeep](https://github.com/react-native-webrtc/react-native-callkeep) package and it's perks.
 
 ---
 
@@ -22,21 +26,19 @@ AculabBaseClass is a Aculab WebRTC class developed for react native to be used i
 
 AculabBaseClass [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AculabBaseClass-README.md)
 
-### Examples
-
-### AcuMobCom as a function component
+### AcuMobCom as a function component - Example
 
 Demonstrates usage of AculabBaseClass in a simple function component.  
-Please visit the [AcuMobCom-AculabBaseClass-Example App](https://github.com/aculab-com/AculabBaseClass-AMC-example) to see it being used in practice.
+Please visit the [AcuMobCom-AculabBaseClass-Example App](https://github.com/aculab-com/AcuMobCom-AculabBaseClass-Example) to see it being used in practice.
 
-[AcuMobCom-AculabBaseClass-Example app README](https://github.com/aculab-com/AculabBaseClass-AMC-example/blob/main/README.md)
+[AcuMobCom-AculabBaseClass-Example app README](https://github.com/aculab-com/AcuMobCom-AculabBaseClass-Example/blob/main/README.md)
 
-### AculabCall as a function component
+### AculabCall as a function component - Example
 
 Demonstrates usage of AculabBaseClass and [CallKeep](https://github.com/react-native-webrtc/react-native-callkeep) in a simple function component.  
-Please visit the [AculabCall-AculabBaseClass-Example App](https://github.com/aculab-com/AculabCallClass-AC-example) to see it being used in practice.
+Please visit the [AculabCall-AculabBaseClass-Example App](https://github.com/aculab-com/AculabCall-AculabBaseClass-Example) to see it being used in practice.
 
-[AculabCall-AculabBaseClass-Example app README](https://github.com/aculab-com/AculabCallClass-AC-example/blob/main/README.md)
+[AculabCall-AculabBaseClass-Example app README](https://github.com/aculab-com/AculabCall-AculabBaseClass-Example/blob/main/README.md)
 
 ---
 
