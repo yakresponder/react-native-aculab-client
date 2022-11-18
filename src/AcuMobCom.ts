@@ -1,51 +1,13 @@
 import { Component } from 'react';
 import AculabBaseClass from './AculabBaseClass';
-
-interface AcuMobComProps2 {
-  webRTCToken: string;
-  webRTCAccessKey: string;
-  cloudRegionId: string;
-  registerClientId: string; // app client ID for registration
-  logLevel: string;
-}
-
-interface AcuMobComState2 {
-  remoteStream: any;
-  localStream: any;
-  inboundCall: boolean;
-  outboundCall: boolean;
-  serviceName: string;
-  client: any;
-  callClientId: string; // call client with this ID
-  calling: 'none' | 'client' | 'service';
-  call: any;
-  // use callState to track state of the call (use it for effects e.g. ringing, vibration)
-  callState:
-    | 'idle'
-    | 'calling'
-    | 'incoming call'
-    | 'got media'
-    | 'ringing'
-    | 'connecting'
-    | 'connected'
-    | 'error';
-  incomingCallClientId: string; // inbound call from client ID
-  // mute state
-  outputAudio: boolean;
-  mic: boolean;
-  outputVideo: boolean;
-  camera: boolean;
-  // mute state flags
-  localVideoMuted: boolean;
-  remoteVideoMuted: boolean;
-}
+import type { AcuMobComProps, AcuMobComState } from './types';
 
 /**
  * AcuMobCom is a complex component Allowing WebRTC communication using Aculab Cloud Services.
  */
 export class AculabBaseComponent<
-  Props extends AcuMobComProps2,
-  State extends AcuMobComState2
+  Props extends AcuMobComProps,
+  State extends AcuMobComState
 > extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -65,7 +27,7 @@ export class AculabBaseComponent<
       camera: false,
       localVideoMuted: false,
       remoteVideoMuted: false,
-      // speakerOn: false,
+      speakerOn: false,
       incomingCallClientId: '',
     } as State;
   }
@@ -310,6 +272,6 @@ export class AculabBaseComponent<
 }
 
 export default class AcuMobCom extends AculabBaseComponent<
-  AcuMobComProps2,
-  AcuMobComState2
+  AcuMobComProps,
+  AcuMobComState
 > {}

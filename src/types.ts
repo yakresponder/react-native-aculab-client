@@ -1,30 +1,20 @@
-interface CallConstraints {
-  audio: boolean;
-  video: boolean;
-}
-
-interface CallOptions {
-  constraints: CallConstraints;
-  receiveAudio: boolean;
-  receiveVideo: boolean;
-}
-
 export interface AcuMobComProps {
-  cloudRegionId: string;
-  webRTCAccessKey: string;
-  registerClientId: string; // app client ID for registration
-  logLevel: number | string;
   webRTCToken: string;
+  webRTCAccessKey: string;
+  cloudRegionId: string;
+  registerClientId: string; // app client ID for registration
+  logLevel: string;
 }
 
 export interface AcuMobComState {
   remoteStream: any;
   localStream: any;
-  dtmfEnabled: boolean;
+  inboundCall: boolean;
+  outboundCall: boolean;
   serviceName: string;
-  webRTCToken: string;
   client: any;
   callClientId: string; // call client with this ID
+  calling: 'none' | 'client' | 'service';
   call: any;
   // use callState to track state of the call (use it for effects e.g. ringing, vibration)
   callState:
@@ -36,11 +26,8 @@ export interface AcuMobComState {
     | 'connecting'
     | 'connected'
     | 'error';
-  callOptions: CallOptions;
-  speakerOn: boolean;
   incomingCallClientId: string; // inbound call from client ID
-  timer?: number;
-
+  speakerOn: boolean;
   // mute state
   outputAudio: boolean;
   mic: boolean;
