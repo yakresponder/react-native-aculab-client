@@ -12,6 +12,8 @@ export class AculabBaseComponent<
   constructor(props: Props) {
     super(props);
     this.state = {
+      inboundCall: false,
+      outboundCall: false,
       remoteStream: null,
       localStream: null,
       serviceName: '', // service name to call

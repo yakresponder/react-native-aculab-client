@@ -168,6 +168,11 @@ Use state **callState** as indication of current state.
 |                           | 'connecting'      |               | Call was answered, connecting in progress.                                |
 |                           | 'connected'       |               | Peer-to-peer connection established.                                      |
 |                           | 'error'           |               | Error state.                                                              |
+|calling                    | 'none'            | 'none'        | Normal/idle state.                                                        |
+|                           | 'client'          |               | Calling client.                                                           |
+|                           | 'service'         |               | Calling service.                                                          |
+| inboundCall               | boolean           | false         | True when WebRTC has inbound call.                                        |
+| outboundCall              | boolean           | false         | True when WebRTC has outbound call.                                       |
 | webRTCToken               | string            | ''            | Holds last used WebRTC Token.                                             |
 | callClientId              | string            | ''            | Holds client ID for outbound call.                                        |
 | serviceName               | string            | ''            | Holds service ID for outbound call.                                       |
