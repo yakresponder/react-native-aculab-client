@@ -29,6 +29,7 @@ export class AculabBaseComponent<
       remoteVideoMuted: false,
       speakerOn: false,
       incomingCallClientId: '',
+      webRTCToken: '',
     } as State;
   }
 
@@ -48,6 +49,7 @@ export class AculabBaseComponent<
       );
       if (newClient) {
         AculabBaseClass._client = newClient;
+        this.setState({ webRTCToken: webRTCToken });
         this.setState({ client: newClient });
       }
       try {
@@ -92,6 +94,7 @@ export class AculabBaseComponent<
   unregister(): void {
     AculabBaseClass.unregister();
     this.setState({ client: null });
+    this.setState({ webRTCToken: '' });
   }
 
   /**
@@ -268,6 +271,7 @@ export class AculabBaseComponent<
    */
   enableIncomingCalls(webRTCToken: string) {
     AculabBaseClass.enableIncomingCalls(webRTCToken);
+    this.setState({ webRTCToken: webRTCToken });
   }
 }
 

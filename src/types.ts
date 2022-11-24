@@ -16,6 +16,7 @@ export interface AcuMobComState {
   callClientId: string; // call client with this ID
   calling: 'none' | 'client' | 'service';
   call: any;
+  webRTCToken: string;
   // use callState to track state of the call (use it for effects e.g. ringing, vibration)
   callState:
     | 'idle'
