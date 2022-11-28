@@ -1,3 +1,5 @@
+export type CallType = 'none' | 'client' | 'service';
+
 export interface AcuMobComProps {
   webRTCToken: string;
   webRTCAccessKey: string;
@@ -14,7 +16,7 @@ export interface AcuMobComState {
   serviceName: string;
   client: any;
   callClientId: string; // call client with this ID
-  calling: 'none' | 'client' | 'service';
+  calling: CallType;
   call: any;
   webRTCToken: string;
   // use callState to track state of the call (use it for effects e.g. ringing, vibration)
@@ -42,15 +44,13 @@ export interface AcuMobComState {
 export interface AculabCallState extends AcuMobComState {
   // CallKeep
   callUuid: string | number[];
-  callType: 'none' | 'client' | 'service';
   callUIInteraction: 'none' | 'answered' | 'rejected';
   incomingUI: boolean;
   callKeepCallActive: boolean;
-  inboundCall: boolean;
-  outboundCall: boolean;
-
   // use this flag for notifications
   notificationCall: boolean;
+  // use for counter
+  // timer: number;
 }
 
 export interface AculabCallProps extends AcuMobComProps {
@@ -74,7 +74,7 @@ export interface WebRTCTokenProps {
 
 export interface CallRecord {
   name: string;
-  type: 'incoming' | 'outgoing' | 'missed';
+  action: 'incoming' | 'outgoing' | 'missed';
   duration: number | undefined; // in seconds
-  call: 'client' | 'service';
+  type: CallType;
 }

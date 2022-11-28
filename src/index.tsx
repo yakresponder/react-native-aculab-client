@@ -10,13 +10,13 @@ import {
   cancelIncomingCallNotification,
   aculabClientEvent,
 } from './AculabClientModule';
-// import AculabCall, { initializeCallKeep } from './AculabCall';
+import AculabCall, { initializeCallKeep } from './AculabCall';
 import Counter from './Counter';
 
 export {
   AculabBaseClass,
   AcuMobCom,
-  // AculabCall,
+  AculabCall,
   Counter,
   turnOnSpeaker,
   isSpeakerphoneOn,
@@ -25,6 +25,6 @@ export {
   showAlert,
   incomingCallNotification,
   cancelIncomingCallNotification,
-  // initializeCallKeep,
+  initializeCallKeep,
   aculabClientEvent,
 };
