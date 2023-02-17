@@ -4,7 +4,7 @@ import { AculabCloudClient } from 'aculab-webrtc';
 import { deleteSpaces, showAlert } from './helpers';
 
 /**
- * AcuMobCom is a complex component Allowing WebRTC communication using Aculab Cloud Services.
+ * AculabBaseClass is a complex component Allowing WebRTC communication using Aculab Cloud Services.
  */
 export class AculabBaseClass {
   _client: any; // aculabCloudClient does not have types
@@ -77,7 +77,7 @@ export class AculabBaseClass {
    */
   clientCheck = (): boolean => {
     if (this._client === null) {
-      console.log('[ AcuMobCom ]', 'Register the client first');
+      console.log('[ AculabBaseClass ]', 'Register the client first');
       return false;
     }
     return true;
@@ -133,7 +133,7 @@ export class AculabBaseClass {
   swapCam = (localVideoMuted: boolean, call: any) => {
     if (localVideoMuted) {
       console.log(
-        '[ AcuMobCom ]',
+        '[ AculabBaseClass ]',
         'swap camera allowed only when local video is streaming'
       );
     } else {
@@ -331,7 +331,7 @@ export class AculabBaseClass {
    * @param {any} obj webrtc object from aculab-webrtc
    */
   handleError = (obj: any) => {
-    console.error('[ AcuMobCom ]', 'handle error OBJ: ', obj.call);
+    console.error('[ AculabBaseClass ]', 'handle error OBJ: ', obj.call);
     obj.call.disconnect();
   };
 

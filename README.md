@@ -1,6 +1,6 @@
 # react-native-aculab-client
 
-This package implements [Aculab](https://www.aculab.com/) webRTC services in the React Native project
+This package implements [Aculab](https://www.aculab.com/) webRTC services in a React Native project
 
 ![npm](https://img.shields.io/npm/dw/react-native-aculab-client)
 [![npm_package](https://img.shields.io/npm/v/react-native-aculab-client?color=green)](https://www.npmjs.com/package/react-native-aculab-client)
@@ -9,14 +9,14 @@ This package implements [Aculab](https://www.aculab.com/) webRTC services in the
 This package holds
 
 - [AculabBaseClass](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#1-aculabbaseclass) that is ideal for coding your own function or class components.
-- [AcuMobCom](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#2-acumobcom-class-component) class component that provides all you need for basic call with minimal requirements. As class component it holds all states therefore is less flexible than function component you can make yourself but it work out of the box.
-- [AculabCall](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#3-aculabcall-class-component) class component that on top of basic functionality makes use of [react-native-callkeep](https://github.com/react-native-webrtc/react-native-callkeep) package and it's perks.
+- [AcuMobCom](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#2-acumobcom-class-component) a class component that provides all you need for basic call with minimal requirements. As class component it holds all states therefore is less flexible than a function component you can make yourself but it work out of the box.
+- [AculabCall](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#3-aculabcall-class-component) a class component that on top of basic functionality makes use of [react-native-callkeep](https://github.com/react-native-webrtc/react-native-callkeep) package and it's perks.
 
 ---
 
 ## 1. AculabBaseClass
 
-AculabBaseClass is a Aculab WebRTC class developed for react native to be used in *class component* or *function component* allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls.
+AculabBaseClass is an Aculab WebRTC class developed to be used in a react native *class or function component* allowing iOS and Android devices to use Aculab Services and make peer-to-peer video calls.
 
 ### AculabBaseClass dependencies
 
@@ -62,7 +62,7 @@ Please visit the [Example App](https://github.com/aculab-com/AcuMobCom-Example) 
 
 ## 3. AculabCall class component
 
-AculabCall is a react native *class component* allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls with additional features provided by react-native-callkeep package.
+AculabCall is a react native *class component* allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls with additional features provided by the react-native-callkeep package.
 
 ### AculabCall dependencies
 
@@ -91,7 +91,7 @@ If you encounter a Bitcode issue coming from WebRTC framework while releasing yo
 
 MIT
 
-Copyright (c) 2022 Aculab
+Copyright (c) 2023 Aculab
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
