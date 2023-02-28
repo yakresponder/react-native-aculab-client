@@ -87,6 +87,10 @@ If you encounter a Bitcode issue coming from WebRTC framework while releasing yo
 
 2. [Download the bitcode](https://github.com/jitsi/jitsi-meet/issues/4209) by running this script: node_modules/react-native-webrtc/tools/downloadBitcode.sh, then release.
 
+## Disclaimer
+
+Please note this software is released as part of a new product introduction process and this build is of evaluation trial standard. While endeavour has been made to provide a high quality level, we would not except it to be entirely bug-free. Any bugs we have found are documented in the release notes. Aculab would greatly appreciate hearing any that you may find. We would not recommend the use of this or any beta software in business critical applications.
+
 ## License
 
 MIT
