@@ -8,9 +8,10 @@ This package implements [Aculab](https://www.aculab.com/) webRTC services in a R
 
 This package holds
 
-- [AculabBaseClass](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#1-aculabbaseclass) that is ideal for coding your own function or class components.
-- [AcuMobCom](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#2-acumobcom-class-component) a class component that provides all you need for basic call with minimal requirements. As class component it holds all states therefore is less flexible than a function component you can make yourself but it work out of the box.
-- [AculabCall](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#3-aculabcall-class-component) a class component that on top of basic functionality makes use of [react-native-callkeep](https://github.com/react-native-webrtc/react-native-callkeep) package and it's perks.
+- [AculabBaseClass](https://github.com/aculab-com/react-native-aculab-client.git) that is ideal for coding your own function or class components.
+- [AcuMobCom](https://github.com/aculab-com/react-native-aculab-client.git) a class component that provides all you need for basic call with minimal requirements. As class component it holds all states therefore is less flexible than a function component you can make yourself but it work out of the box.
+- [AculabCall](https://github.com/aculab-com/react-native-aculab-client.git
+- ) a class component that on top of basic functionality makes use of [react-native-callkeep](https://github.com/react-native-webrtc/react-native-callkeep) package and it's perks.
 
 ---
 
@@ -71,7 +72,7 @@ AculabCall is a react native *class component* allowing iOS and Android platform
 [![react-native-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
 [![react-native-callkeep](https://img.shields.io/npm/dependency-version/react-native-aculab-client/dev/react-native-callkeep)](https://www.npmjs.com/package/react-native-callkeep)
 
-AculabCall [README](https://github.com/aculab-com/react-native-aculab-client/blob/aculabcall/src/AculabCall-README.md)
+AculabCall [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AculabCall-README.md)
 
 Please visit the [Example App](https://github.com/aculab-com/AculabCall-Example) to see it being used in practice.
 
