@@ -305,7 +305,7 @@ Use state **callState** as indication of current state.
 | speakerOn                 | boolean           | false         | It is not part of any method and should be used to store state of the speaker if needed.    |
 | incomingCallClientId      | string            | ''            | When inbound call, it holds client ID from incoming call                 |
 | callUuid                  | string            | ''            | holds call uuid if call is in progress                                   |
-| callType                  | 'none'            | 'none'        | flag who is calling/being called                                         |
+| calling                   | 'none'            | 'none'        | flag who is calling/being called                                         |
 |                           | 'client'          |               |                                                                          |
 |                           | 'service'         |               |                                                                          |
 | callUIInteraction         | 'none'            | 'none'        | Flag: indicating how user interacted with incoming call UI              |
@@ -319,22 +319,19 @@ Use state **callState** as indication of current state.
 
 | Function                    | Returns   | Description                                                                 |
 |---                          | ---       | ---                                                                         |
-| getToken({registerClientId: string, tokenLifeTime: number, enableIncomingCall: boolean, callClientRange: string, cloudRegionId: string, cloudUsername: string, apiAccessKey: string})        | string    | Get WebRTC Token for registration. **This should be done on server side**                                   |
 | register()                  |           | Register the client using AcuMobCom parameters. Every client has to be registered before using any other features.                        |
 | initializeCallKeep(appName: string)     |           | initialize CallKeep, this function must be called when the Component mounts                                                   |
-| unregister()                |           | Unregister current client                                                   |
-| callCheck()                 | boolean   | Returns true if a call is in progress                                       |
 | startCall('client' | 'service', name: string)       |           | Calls client/service with name                      |
 | endCall()                   |           | Terminates call in progress                                                 |
 | swapCam()                   |           | Switches between front and back camera when video call is in progress       |
 | mute()                      |           | Mutes video/audio of the call in progress based on current states of mic, outputAudio, camera and outputVideo when the method is called.  |
 | sendDtmf(string)            |           | Sends DTMF to service when service call is in progress. Allowed characters 0-9, *, #. Use one character per a method call.
-| getLocalStream()            | object    | Use to get local video stream                                               |
 | disableIncomingCalls()      |           | Disable incoming all calls                                                  |
-| enableIncomingCalls(webRTCToken?: string)|          | Refresh WebRTC Token and enable incoming calls                  |
+| enableIncomingCalls(webRTCToken: string)|          | Refresh WebRTC Token and enable incoming calls                  |
 | getLastCall()               | object    | Returns last call object in form {name, type, duration, call}               |
 | onActivateAudioSession()    |           | overwrite this method to deliver own logic (e.g. outgoing ringtone)         |
 | unregister()                |           | Disable WebRTC - call this method when the component will unmount           |
+| addCallKeepListeners()      |           | Add listeners for CallKeep and incoming call notification (Android) - call this method when the componentDidMount will |
 | destroyListeners()          |           | Destroy listeners for CallKeep and incoming call notification (Android) - call this method when the component will unmount           |
 | onActivateAudioSession()    |           | overwrite this method to deliver own logic (e.g. outgoing ringtone)         |
 
@@ -343,11 +340,12 @@ Use state **callState** as indication of current state.
 Functions you may find handy
 
 ```ts
-import { deleteSpaces, showAlert } from 'react-native-aculab-client';
+import { getToken, deleteSpaces, showAlert } from 'react-native-aculab-client';
 ```
 
 | Function                                  | Returns   | Description                               |
 |---                                        | ---       | ---                                       |
+| getToken({registerClientId: string, tokenLifeTime: number, enableIncomingCall: boolean, callClientRange: string, cloudRegionId: string, cloudUsername: string, apiAccessKey: string})        | string    | Get WebRTC Token for registration. **This should be done on server side**                                   |
 | deleteSpaces(string)                      | string    | returns string without white spaces       |
 | showAlert(title: string, message: string) |           | displays alert message                    |
 

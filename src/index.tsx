@@ -1,18 +1,23 @@
 'use strict';
 
-import AcuMobCom, { getToken } from './AcuMobCom';
-import { deleteSpaces, showAlert } from './helpers';
+import AcuMobCom from './AcuMobCom';
+import AculabBaseClass from './AculabBaseClass';
+import { deleteSpaces, showAlert, getToken } from './helpers';
 import {
   turnOnSpeaker,
   isSpeakerphoneOn,
   incomingCallNotification,
   cancelIncomingCallNotification,
+  aculabClientEvent,
 } from './AculabClientModule';
 import AculabCall, { initializeCallKeep } from './AculabCall';
+import Counter from './Counter';
 
 export {
+  AculabBaseClass,
   AcuMobCom,
   AculabCall,
+  Counter,
   turnOnSpeaker,
   isSpeakerphoneOn,
   getToken,
@@ -21,4 +26,5 @@ export {
   incomingCallNotification,
   cancelIncomingCallNotification,
   initializeCallKeep,
+  aculabClientEvent,
 };

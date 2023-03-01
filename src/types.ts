@@ -1,31 +1,24 @@
-interface CallConstraints {
-  audio: boolean;
-  video: boolean;
-}
-
-interface CallOptions {
-  constraints: CallConstraints;
-  receiveAudio: boolean;
-  receiveVideo: boolean;
-}
+export type CallType = 'none' | 'client' | 'service';
 
 export interface AcuMobComProps {
-  cloudRegionId: string;
-  webRTCAccessKey: string;
-  registerClientId: string; // app client ID for registration
-  logLevel: number | string;
   webRTCToken: string;
+  webRTCAccessKey: string;
+  cloudRegionId: string;
+  registerClientId: string; // app client ID for registration
+  logLevel: string;
 }
 
 export interface AcuMobComState {
   remoteStream: any;
   localStream: any;
-  dtmfEnabled: boolean;
+  inboundCall: boolean;
+  outboundCall: boolean;
   serviceName: string;
-  webRTCToken: string;
   client: any;
   callClientId: string; // call client with this ID
+  calling: CallType;
   call: any;
+  webRTCToken: string;
   // use callState to track state of the call (use it for effects e.g. ringing, vibration)
   callState:
     | 'idle'
@@ -36,11 +29,8 @@ export interface AcuMobComState {
     | 'connecting'
     | 'connected'
     | 'error';
-  callOptions: CallOptions;
-  speakerOn: boolean;
   incomingCallClientId: string; // inbound call from client ID
-  timer?: number;
-
+  speakerOn: boolean;
   // mute state
   outputAudio: boolean;
   mic: boolean;
@@ -54,15 +44,13 @@ export interface AcuMobComState {
 export interface AculabCallState extends AcuMobComState {
   // CallKeep
   callUuid: string | number[];
-  callType: 'none' | 'client' | 'service';
   callUIInteraction: 'none' | 'answered' | 'rejected';
   incomingUI: boolean;
   callKeepCallActive: boolean;
-  inboundCall: boolean;
-  outboundCall: boolean;
-
   // use this flag for notifications
   notificationCall: boolean;
+  // use for counter
+  // timer: number;
 }
 
 export interface AculabCallProps extends AcuMobComProps {
@@ -74,7 +62,7 @@ export interface AculabCallProps extends AcuMobComProps {
   };
 }
 
-export interface WebRTCToken {
+export interface WebRTCTokenProps {
   registerClientId: string;
   tokenLifeTime: number; //time(ms)
   enableIncomingCall: boolean;
@@ -86,7 +74,7 @@ export interface WebRTCToken {
 
 export interface CallRecord {
   name: string;
-  type: 'incoming' | 'outgoing' | 'missed';
+  action: 'incoming' | 'outgoing' | 'missed';
   duration: number | undefined; // in seconds
-  call: 'client' | 'service';
+  type: CallType;
 }

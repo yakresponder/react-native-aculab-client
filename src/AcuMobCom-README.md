@@ -1,6 +1,4 @@
-# react-native-AcuMobCom
-
-Aculab react-native sdk
+# AcuMobCom class component
 
 ![npm](https://img.shields.io/npm/dw/react-native-aculab-client)
 [![npm_package](https://img.shields.io/npm/v/react-native-aculab-client?color=green)](https://www.npmjs.com/package/react-native-aculab-client)
@@ -14,7 +12,7 @@ Dependencies
 
 ---
 
-This package implements Aculab webRTC services in the React Native project. The main part of the package is component class AcuMobCom. You can write a custom class that extends this component and uses its state variables and methods.
+This class component implements Aculab webRTC services in the React Native project and it is part of Aculab react-native sdk react-native-aculab-client. You can write a custom class that extends AcuMobCom class component and uses its state variables and methods.
 
 Please visit the [Example App](https://github.com/aculab-com/AcuMobCom-Example) to see it being used in practice.
 
@@ -162,50 +160,54 @@ Use state **callState** as indication of current state.
 
 | State                     | Allowed Values    | Default value | Description                                                               |
 |------------------         |------------------ |---            | -----------------------------                                             |
-| callState                 | 'idle'            | 'idle'        | Normal state                                                              |
-|                           | 'calling'         |               | Outbound call                                                             |
-|                           | 'incoming call'   |               | Inbound call                                                              |
-|                           | 'got media'       |               | Connected to a service                                                    |
-|                           | 'ringing'         |               | Found service/client and awaits answer                                    |
-|                           | 'connecting'      |               | Call was answered, connecting in progress                                 |
-|                           | 'connected'       |               | Peer-to-peer connection established                                       |
-|                           | 'error'           |               | Error state                                                               |
-| webRTCToken               | string            | ''            | Holds WebRTC Token after registration                                     |
-| callClientId              | string            | ''            | Holds client ID for outbound call                                         |
-| serviceName               | string            | ''            | Holds service ID for outbound call                                        |
-| mic                       | boolean           | false         | Used for mute method and indicates local audio on/off status              |
-| outputAudio               | boolean           | false         | Used for mute method                                                      |
-| camera                    | boolean           | false         | Used for mute method and indicates local video on/off status              |
-| outputVideo               | boolean           | false         | Used for mute method                                                      |
-| localVideoMuted           | boolean           | false         | If local video is muted this state is true                                |
-| remoteVideoMuted          | boolean           | false         | If remote video is muted this state is true                               |
-| call                      | object            | null          | If not null a call is in progress                                         |
-| remoteStream              | object            | null          | Holds remote stream object when a call is in progress                     |
-| localStream               | object            | null          | Holds local stream object when a call is in progress                      |
+| callState                 | 'idle'            | 'idle'        | Normal state.                                                             |
+|                           | 'calling'         |               | Outbound call.                                                            |
+|                           | 'incoming call'   |               | Inbound call.                                                             |
+|                           | 'got media'       |               | Connected to a service.                                                   |
+|                           | 'ringing'         |               | Found service/client and awaits answer.                                   |
+|                           | 'connecting'      |               | Call was answered, connecting in progress.                                |
+|                           | 'connected'       |               | Peer-to-peer connection established.                                      |
+|                           | 'error'           |               | Error state.                                                              |
+|calling                    | 'none'            | 'none'        | Normal/idle state.                                                        |
+|                           | 'client'          |               | Calling client.                                                           |
+|                           | 'service'         |               | Calling service.                                                          |
+| inboundCall               | boolean           | false         | True when WebRTC has inbound call.                                        |
+| outboundCall              | boolean           | false         | True when WebRTC has outbound call.                                       |
+| webRTCToken               | string            | ''            | Holds last used WebRTC Token.                                             |
+| callClientId              | string            | ''            | Holds client ID for outbound call.                                        |
+| serviceName               | string            | ''            | Holds service ID for outbound call.                                       |
+| mic                       | boolean           | false         | Used for mute method and indicates local audio on/off status.             |
+| outputAudio               | boolean           | false         | Used for mute method.                                                     |
+| camera                    | boolean           | false         | Used for mute method and indicates local video on/off status.             |
+| outputVideo               | boolean           | false         | Used for mute method.                                                     |
+| localVideoMuted           | boolean           | false         | If local video is muted this state is true.                               |
+| remoteVideoMuted          | boolean           | false         | If remote video is muted this state is true.                              |
+| call                      | object            | null          | If not null a call is in progress.                                        |
+| remoteStream              | object            | null          | Holds remote stream object when a call is in progress.                    |
+| localStream               | object            | null          | Holds local stream object when a call is in progress.                     |
 | speakerOn                 | boolean           | false         | It is not part of any method and should be used to store state of the speaker if needed.    |
-| incomingCallClientId      | string            | ''            | When inbound call, it holds client ID from incoming call                 |
+| incomingCallClientId      | string            | ''            | When inbound call, it holds client ID from incoming call.                 |
 
 #### AcuMobCom Functions
 
-| Function          | Returns   | Description                               |
-|---                | ---       | ---                                       |
-| getToken({registerClientId: string, tokenLifeTime: number, enableIncomingCall: boolean, callClientRange: string, cloudRegionId: string, cloudUsername: string, apiAccessKey: string})        | string    | Get WebRTC Token for registration. **This should be done on server side**    |
-| register()        |           | Register the client using AcuMobCom parameters. Every client has to be registered before using any other features.    |
-| unregister()      |           | Unregister current client                 |
-| callCheck()       | boolean   | Returns true if a call is in progress     |
-| callClient()      |           | Calls client stored in callClientId       |
-| callService()     |           | Calls service stored in serviceName       |
-| stopCall()        |           | Terminates call in progress               |
-| swapCam()         |           | Switches between front and back camera when video call is in progress |
-| answer()          |           | Answers incoming call                     |
-| reject()          |           | Rejects incoming call                     |
-| mute()            |           | Mutes video/audio of the call in progress based on current states of mic, outputAudio, camera and outputVideo when the method is called. |
-| sendDtmf(string)  |           | Sends DTMF to service when service call is in progress. Allowed characters 0-9, *, #. Use one character per a method call.
-| getLocalStream()  | object    | Use to get local video stream             |
-| disableIncomingCalls()     |           | Disable incoming all calls       |
-| enableIncomingCalls(webRTCToken?: string)  |           | Refresh WebRTC Token and enable incoming calls              |
+| Function                                | Returns   | Description                               |
+|---                                      | ---       | ---                                       |
+| register(webRTCToken? : string)         |           | Register the client using AcuMobCom parameters. Every client has to be registered before using any other features. WebRTCToken is an optional parameter, default webRTCToken is taken from props.    |
+| unregister()                            |           | Unregister current client.                 |
+<!-- | callCheck()       | boolean   | Returns true if a call is in progress.     | -->
+| callClient()                            |           | Calls client stored in callClientId.       |
+| callService()                           |           | Calls service stored in serviceName.       |
+| stopCall()                              |           | Terminates call in progress.               |
+| swapCam()                               |           | Switches between front and back camera when video call is in progress. |
+| answer()                                |           | Answers incoming call.                     |
+| reject()                                |           | Rejects incoming call.                     |
+| mute()                                  |           | Mutes video/audio of the call in progress based on current states of mic, outputAudio, camera and outputVideo when the method is called. |
+| sendDtmf(string)                        |           | Sends DTMF to service when service call is in progress. Allowed characters 0-9, *, #. Use one character per a method call.
+| getLocalStream()                        | object    | Use to get local video stream.             |
+| disableIncomingCalls()                  |           | Disable incoming all calls.       |
+| enableIncomingCalls(webRTCToken: string)|           | Refresh WebRTC Token for the aculab cloud client and enable incoming calls.              |
 
-### AcuMobCom helpers
+### react-native-aculab-client common functions
 
 Functions you may find handy
 
@@ -213,10 +215,11 @@ Functions you may find handy
 import {deleteSpaces, showAlert} from 'react-native-aculab-client';
 ```
 
-| Function                                  | Returns   | Description                               |
-|---                                        | ---       | ---                                       |
-| deleteSpaces(string)                      | string    | returns string without white spaces       |
-| showAlert(title: string, message: string) |           | displays alert message                    |
+| Function                                  | Returns   | Description                              |
+|---                                        | ---       | ---                                      |
+| getToken({registerClientId: string, tokenLifeTime: number, enableIncomingCall: boolean, callClientRange: string, cloudRegionId: string, cloudUsername: string, apiAccessKey: string})        | string    | Get WebRTC Token for registration. **This should be done on server side**              |
+| deleteSpaces(string)                      | string    | returns string without white spaces      |
+| showAlert(title: string, message: string) |           | displays alert message                   |
 
 ### AcuMobCom audio set
 

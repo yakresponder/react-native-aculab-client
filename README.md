@@ -1,16 +1,50 @@
 # react-native-aculab-client
 
-This package implements [Aculab](https://www.aculab.com/) webRTC services in the React Native project
+This package implements [Aculab](https://www.aculab.com/) webRTC services in a React Native project
 
 ![npm](https://img.shields.io/npm/dw/react-native-aculab-client)
 [![npm_package](https://img.shields.io/npm/v/react-native-aculab-client?color=green)](https://www.npmjs.com/package/react-native-aculab-client)
 [![license](https://img.shields.io/npm/l/react-native-aculab-client)](https://github.com/aculab-com/react-native-aculab-client/blob/main/LICENSE)
 
+This package holds
+
+- [AculabBaseClass](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#1-aculabbaseclass) that is ideal for coding your own function or class components.
+- [AcuMobCom](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#2-acumobcom-class-component) a class component that provides all you need for basic call with minimal requirements. As class component it holds all states therefore is less flexible than a function component you can make yourself but it work out of the box.
+- [AculabCall](https://github.com/aculab-com/react-native-aculab-client/tree/CA-1832-create-classes-from-components#3-aculabcall-class-component) a class component that on top of basic functionality makes use of [react-native-callkeep](https://github.com/react-native-webrtc/react-native-callkeep) package and it's perks.
+
 ---
 
-## 1. AcuMobCom component
+## 1. AculabBaseClass
 
-AcuMobCom is a react native component allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls.
+AculabBaseClass is an Aculab WebRTC class developed to be used in a react native *class or function component* allowing iOS and Android devices to use Aculab Services and make peer-to-peer video calls.
+
+### AculabBaseClass dependencies
+
+[![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
+[![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
+[![react-native-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
+
+AculabBaseClass [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AculabBaseClass-README.md)
+
+### AcuMobCom as a function component - Example
+
+Demonstrates usage of AculabBaseClass in a simple function component.  
+Please visit the [AcuMobCom-AculabBaseClass-Example App](https://github.com/aculab-com/AcuMobCom-AculabBaseClass-Example) to see it being used in practice.
+
+[AcuMobCom-AculabBaseClass-Example app README](https://github.com/aculab-com/AcuMobCom-AculabBaseClass-Example/blob/main/README.md)
+
+### AculabCall as a function component - Example
+
+Demonstrates usage of AculabBaseClass and [CallKeep](https://github.com/react-native-webrtc/react-native-callkeep) in a simple function component.  
+Please visit the [AculabCall-AculabBaseClass-Example App](https://github.com/aculab-com/AculabCall-AculabBaseClass-Example) to see it being used in practice.
+
+[AculabCall-AculabBaseClass-Example app README](https://github.com/aculab-com/AculabCall-AculabBaseClass-Example/blob/main/README.md)
+
+---
+
+## 2. AcuMobCom class component
+
+AcuMobCom is a react native *class component* allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls.
 
 ### AcuMobCom dependencies
 
@@ -26,9 +60,9 @@ Please visit the [Example App](https://github.com/aculab-com/AcuMobCom-Example) 
 
 ---
 
-## 2. AculabCall component
+## 3. AculabCall class component
 
-AculabCall is a react native component allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls and making use of react-native-callkeep package.
+AculabCall is a react native *class component* allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls with additional features provided by the react-native-callkeep package.
 
 ### AculabCall dependencies
 
@@ -61,7 +95,7 @@ Please note this software is released as part of a new product introduction proc
 
 MIT
 
-Copyright (c) 2022 Aculab
+Copyright (c) 2023 Aculab
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

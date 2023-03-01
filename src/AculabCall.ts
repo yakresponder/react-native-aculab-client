@@ -6,8 +6,14 @@ import {
   aculabClientEvent,
 } from './AculabClientModule';
 import RNCallKeep, { IOptions } from 'react-native-callkeep';
-import type { AculabCallProps, AculabCallState, CallRecord } from './types';
+import type {
+  AculabCallProps,
+  AculabCallState,
+  CallRecord,
+  CallType,
+} from './types';
 import uuid from 'react-native-uuid';
+import Counter from './Counter';
 
 /**
  * Run this function before using CallKeep
@@ -52,18 +58,13 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
   state: AculabCallState = {
     remoteStream: null,
     localStream: null,
-    dtmfEnabled: false,
     serviceName: '', // service name to call
     webRTCToken: '',
     client: null,
     call: null,
+    calling: 'none',
     callClientId: '', // client ID to call
     callState: 'idle', // human readable call status
-    callOptions: {
-      constraints: { audio: false, video: false },
-      receiveAudio: false,
-      receiveVideo: false,
-    },
     outputAudio: false,
     mic: false,
     outputVideo: false,
@@ -71,59 +72,29 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
     speakerOn: false,
     incomingCallClientId: '',
     callUuid: '',
-    callType: 'none',
     callUIInteraction: 'none',
     notificationCall: false,
     incomingUI: false,
     callKeepCallActive: false,
     localVideoMuted: false,
     remoteVideoMuted: false,
-    timer: 0,
+    // timer: 0,
     inboundCall: false,
     outboundCall: false,
   };
 
   private androidListenerA: any;
   private androidListenerB: any;
-  private interval: any;
+  private counter = Counter;
+  // private interval: any;
   private lastCall: CallRecord | undefined;
 
   /**
-   * starts counter, add 1 to timer state every second.
+   * Call to get last call info
+   * @returns last call object
    */
-  startCounter() {
-    this.interval = setInterval(
-      () => this.setState((prevState: any) => ({ timer: prevState.timer + 1 })),
-      1000
-    );
-  }
-
-  /**
-   * stop counter triggered by starCounter function
-   */
-  stopCounter() {
-    clearInterval(this.interval);
-  }
-
-  /**
-   * reset counter (timer state) to 0
-   */
-  resetCounter() {
-    this.setState({ timer: 0 });
-  }
-
-  /**
-   * Returns information about the last call on Android
-   * @returns CallRecord object - holding information about the last inbound or outbound call
-   */
-  getLastCall(): CallRecord | undefined {
-    try {
-      console.log('[ AculabCall ]', 'Last Call Android:', this.lastCall);
-      return this.lastCall;
-    } catch (err: any) {
-      console.error('[ AculabCall ]', 'getLastCall error:', err.message);
-      return;
-    }
+  getLastCall() {
+    return this.lastCall;
   }
 
   /**
@@ -137,8 +108,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
 
     RNCallKeep.addEventListener('answerCall', () => {
       if (Platform.OS === 'ios') {
-        console.log('CALL ANSWERED IN AculabCall');
-        this.setState({ callType: 'client' });
+        this.setState({ calling: 'client' });
         this.setState({ callUIInteraction: 'answered' });
       }
     });
@@ -166,12 +136,6 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
       RNCallKeep.addEventListener(
         'showIncomingCallUi',
         ({ handle, callUUID, name }) => {
-          console.log(
-            'showIncomingCallUi, handle, uuid, name',
-            handle,
-            callUUID,
-            name
-          );
           this.displayCustomIncomingUI(handle, callUUID, name);
         }
       );
@@ -194,17 +158,15 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
     }
   }
 
-  rejectedCallAndroid(payload: any) {
-    console.log('[ AculabCall ]', 'endCallAndroid', payload);
+  rejectedCallAndroid(_payload: any) {
     this.setState({ incomingUI: false });
     this.endCallKeepCall(this.state.callUuid as string);
     this.setState({ callKeepCallActive: false });
     this.setState({ callUIInteraction: 'rejected' }, () => this.endCall());
   }
 
-  answeredCallAndroid(payload: any) {
-    console.log('[ AculabCall ]', 'answerCallAndroid', payload);
-    this.setState({ callType: 'client' });
+  answeredCallAndroid(_payload: any) {
+    this.setState({ calling: 'client' });
     this.setState({ callUIInteraction: 'answered' });
   }
 
@@ -303,13 +265,6 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * Answer incoming call and set states
    */
   answerCall() {
-    console.log('[ AculabCall ]', 'answerCall');
-    console.log('[ AculabCall ]', 'inboundCall', this.state.inboundCall);
-    console.log(
-      '[ AculabCall ]',
-      'answerCall callUIInteraction',
-      this.state.callUIInteraction
-    );
     if (this.state.inboundCall && this.state.callUIInteraction === 'answered') {
       this.setState({ callUIInteraction: 'none' }, this.answer);
     }
@@ -322,7 +277,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    */
   startCall(type: 'service' | 'client', id: string) {
     this.setState({ outboundCall: true });
-    this.setState({ callType: type });
+    this.setState({ calling: type });
     if (Platform.OS === 'ios') {
       RNCallKeep.startCall(
         <string>this.state.callUuid,
@@ -352,14 +307,8 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
   endCallKeepCall(endUuid: string, reason?: number) {
     if (reason) {
       RNCallKeep.reportEndCallWithUUID(endUuid, reason);
-      console.log(
-        '[ AculabCall ]',
-        'endCallKeepCall uuid: ' + endUuid,
-        'reason: ' + reason
-      );
     } else {
       RNCallKeep.endCall(endUuid);
-      console.log('[ AculabCall ]', 'endCallKeepCall callUUID:', endUuid);
     }
   }
 
@@ -369,15 +318,9 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * Answer call CallKeep
    */
   async answer(): Promise<void> {
-    if (this.state.call !== null && this.state.inboundCall) {
-      this.state.callOptions.constraints = { audio: true, video: true };
-      this.state.callOptions.receiveAudio = true;
-      this.state.callOptions.receiveVideo = true;
-      this.state.call.answer(this.state.callOptions);
-      if (Platform.OS === 'android') {
-        RNCallKeep.answerIncomingCall(<string>this.state.callUuid);
-      }
-      this.setState({ inboundCall: false });
+    super.answer();
+    if (this.state.call && Platform.OS === 'android') {
+      RNCallKeep.answerIncomingCall(<string>this.state.callUuid);
     }
   }
 
@@ -385,9 +328,13 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * Assign random UUID to callUuid state if the state doesn't hold any.
    * @param {any} callBack - callback after state is set
    */
-  getCallUuid(callBack?: any): void {
+  getCallUuid(callBack?: () => any): void {
     if (this.state.callUuid === '' || !this.state.callUuid) {
       this.setState({ callUuid: uuid.v4() }, callBack);
+    } else {
+      if (callBack) {
+        callBack();
+      }
     }
   }
 
@@ -395,8 +342,8 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * Called when a call is connected
    * @param {any} obj AcuMobCom object or Incoming call object
    */
-  connected(obj: any): void {
-    super.connected(obj);
+  onConnected(obj: any): void {
+    super.onConnected(obj);
     RNCallKeep.setCurrentCallActive(<string>this.state.callUuid);
     if (!this.state.incomingCallClientId) {
       RNCallKeep.reportConnectedOutgoingCallWithUUID(
@@ -404,11 +351,8 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
       ); // for ios outbound call correct call logging
     }
     this.setState({ callKeepCallActive: true });
-    this.setState({ notificationCall: false });
     this.setState({ incomingUI: false });
-    this.setState({ outboundCall: false });
-    this.setState({ inboundCall: false });
-    this.startCounter();
+    this.counter.startCounter();
   }
 
   /**
@@ -445,56 +389,76 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
 
   /**
    * Android only\
-   * Log call after ended to Call Log (History)
+   * Log call after ended to Call Log (History).
+   * @param {typeof Counter} counter instance of counter class
+   * @param {CallType} callType to be logged
+   * @param {string} incomingCallClientId to be logged
+   * @param {string} callClientId to be logged
+   * @param {string} callServiceId to be logged
+   * @returns {CallRecord} call record object
    */
-  createLastCallObject() {
-    this.stopCounter();
-    if (this.state.incomingCallClientId !== '') {
-      if (this.state.timer === 0) {
-        this.lastCall = {
-          name: this.state.incomingCallClientId,
-          type: 'missed',
-          duration: this.state.timer,
-          call: 'client',
+  createLastCallObject = (
+    counter: typeof Counter,
+    callType: CallType,
+    incomingCallClientId: string,
+    callClientId: string,
+    callServiceId: string
+  ) => {
+    let callTime = counter.stopCounter();
+    let lastCall: CallRecord | undefined;
+
+    if (incomingCallClientId !== '') {
+      if (callTime === 0) {
+        lastCall = {
+          name: incomingCallClientId,
+          action: 'missed',
+          duration: callTime,
+          type: 'client',
         };
       } else {
-        this.lastCall = {
-          name: this.state.incomingCallClientId,
-          type: 'incoming',
-          duration: this.state.timer,
-          call: 'client',
+        lastCall = {
+          name: incomingCallClientId,
+          action: 'incoming',
+          duration: callTime,
+          type: 'client',
         };
       }
     } else {
-      switch (this.state.callType) {
+      switch (callType) {
         case 'service': {
-          this.lastCall = {
-            name: this.state.serviceName,
-            type: 'outgoing',
-            duration: this.state.timer,
-            call: 'service',
+          lastCall = {
+            name: callServiceId,
+            action: 'outgoing',
+            duration: callTime,
+            type: 'service',
           };
           break;
         }
         case 'client': {
-          this.lastCall = {
-            name: this.state.callClientId,
-            type: 'outgoing',
-            duration: this.state.timer,
-            call: 'client',
+          lastCall = {
+            name: callClientId,
+            action: 'outgoing',
+            duration: callTime,
+            type: 'client',
           };
           break;
         }
       }
     }
-    this.resetCounter();
-  }
+    counter.resetCounter();
+    return lastCall;
+  };
 
   // Overwritten function
-  callDisconnected(obj: any): void {
-    console.log('[ callDisconnected ]', Platform.OS);
+  onDisconnected(): void {
+    this.lastCall = this.createLastCallObject(
+      this.counter,
+      this.state.calling,
+      this.state.incomingCallClientId,
+      this.state.callClientId,
+      this.state.serviceName
+    );
     if (this.state.callKeepCallActive === true) {
-      console.log('[ callDisconnected ] callkeep true', Platform.OS);
       if (Platform.OS === 'android' && this.state.incomingUI) {
         RNCallKeep.rejectCall(<string>this.state.callUuid);
         cancelIncomingCallNotification();
@@ -502,18 +466,13 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
         this.endCallKeepCall(<string>this.state.callUuid);
       }
       this.setState({ incomingUI: false });
-      this.createLastCallObject();
     }
     this.setState({ callKeepCallActive: false });
     this.setState({ callUIInteraction: 'none' });
-    this.setState({ callType: 'none' });
-    this.setState({ notificationCall: false });
-    this.setState({ outboundCall: false });
-    this.setState({ inboundCall: false });
     setTimeout(() => {
       this.setState({ callUuid: '' });
     }, 100);
-    super.callDisconnected(obj);
+    super.onDisconnected();
   }
 
   /**
@@ -521,15 +480,10 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * Overwrite this function with your custom incoming call UI for android if you want to
    */
   displayCustomIncomingUI(
-    handle?: string,
+    _handle?: string,
     callUUID?: string,
     name?: string
   ): void {
-    console.log('[ AculabCall ]', 'Android displayCustomIncomingUI', {
-      handle,
-      callUUID,
-      name,
-    });
     incomingCallNotification(
       callUUID!,
       'acu_incoming_call',
