@@ -313,9 +313,7 @@ export class AculabBaseClass {
    * @returns local video stream
    */
   getLocalStream = (call: any) => {
-    var lStream =
-      call._session.sessionDescriptionHandler._peerConnection.getLocalStreams();
-    return lStream[0];
+    return call._session.sessionDescriptionHandler._localMediaStream;
   };
 
   /**
