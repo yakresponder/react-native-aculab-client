@@ -180,8 +180,9 @@ export class AculabBaseClass {
 
   /**
    * overwrite this function to insert logic when WebRTC is ringing.
+   * @param _obj call object
    */
-  onRinging = () => {};
+  onRinging = (_obj: any) => {};
 
   /**
    * overwrite or extend this function to insert logic when WebRTC has incoming call.
@@ -197,8 +198,9 @@ export class AculabBaseClass {
 
   /**
    * overwrite this function to insert logic when WebRTC is connecting call.
+   * @param _obj call object
    */
-  onConnecting = () => {};
+  onConnecting = (_obj: any) => {};
 
   /**
    * overwrite this function to insert logic when WebRTC connected call.
@@ -237,26 +239,26 @@ export class AculabBaseClass {
    * @param call call object
    */
   setupCb = (call: any) => {
-    call.onDisconnect = function (this: AculabBaseClass, obj2: any) {
-      this.onDisconnected(obj2);
-      this.callDisconnected(obj2);
+    call.onDisconnect = function (this: AculabBaseClass, onDisconnectObj: any) {
+      this.onDisconnected(onDisconnectObj);
+      this.callDisconnected(onDisconnectObj);
     }.bind(this);
-    call.onRinging = function (this: AculabBaseClass) {
-      this.onRinging();
+    call.onRinging = function (this: AculabBaseClass, onRingingObj: any) {
+      this.onRinging(onRingingObj);
     }.bind(this);
-    call.onMedia = function (this: AculabBaseClass, obj2: any) {
-      this.onGotMedia(obj2);
-      this.gotMedia(obj2);
+    call.onMedia = function (this: AculabBaseClass, onMediaObj: any) {
+      this.onGotMedia(onMediaObj);
+      this.gotMedia(onMediaObj);
     }.bind(this);
-    call.onConnecting = function (this: AculabBaseClass) {
-      this.onConnecting();
+    call.onConnecting = function (this: AculabBaseClass, onConnectingObj: any) {
+      this.onConnecting(onConnectingObj);
     }.bind(this);
-    call.onConnected = function (this: AculabBaseClass, obj2: any) {
-      this.onConnected(obj2);
-      this.connected(obj2);
+    call.onConnected = function (this: AculabBaseClass, onConnectedObj: any) {
+      this.onConnected(onConnectedObj);
+      this.connected(onConnectedObj);
     }.bind(this);
-    call.onError = function (this: AculabBaseClass, obj2: any) {
-      this.handleError(obj2);
+    call.onError = function (this: AculabBaseClass, onErrorObj: any) {
+      this.handleError(onErrorObj);
     }.bind(this);
     call.onLocalVideoMuteCB = function (this: AculabBaseClass) {
       this.onLocalVideoMute();
