@@ -171,7 +171,7 @@ export class AculabBaseClass {
   };
 
   /**
-   * Send DTMF - accepts 0-9, *, #
+   * Send DTMF - accepts 0-9, *, # using react-native-webrtc native module
    * @param {string} dtmf DTMF character to be sent as a string (e.g. '5')
    * @param call call object
    */
@@ -189,7 +189,7 @@ export class AculabBaseClass {
           pc._peerConnectionId
         );
       } catch (e) {
-        console.error('AculabCloudCall: Exception sending DTMF: ' + e);
+        console.error('AculabBaseClass: Exception sending DTMF: ' + e);
       }
     } else {
       throw 'DTMF send error - no peer connection';
