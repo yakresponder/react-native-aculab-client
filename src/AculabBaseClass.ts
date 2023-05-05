@@ -2,7 +2,9 @@ import { registerGlobals } from 'react-native-webrtc';
 // @ts-ignore
 import { AculabCloudClient } from 'aculab-webrtc';
 import { deleteSpaces, showAlert } from './helpers';
+import { NativeModules } from 'react-native';
 
+const { WebRTCModule } = NativeModules;
 /**
  * AculabBaseClass is a complex component Allowing WebRTC communication using Aculab Cloud Services.
  */
@@ -53,8 +55,7 @@ export class AculabBaseClass {
       cloudRegionId,
       webRTCAccessKey,
       registerClientId,
-      logLevel,
-      webRtcToken
+      logLevel
     );
     newClient.onIncoming = this.onIncoming.bind(this);
     newClient.enableIncoming(webRtcToken);
@@ -170,12 +171,29 @@ export class AculabBaseClass {
   };
 
   /**
-   * Send DTMF - accepts 0-9, *, #
+   * Send DTMF - accepts 0-9, *, # using react-native-webrtc native module
    * @param {string} dtmf DTMF character to be sent as a string (e.g. '5')
    * @param call call object
    */
   sendDtmf = (dtmf: string, call: any) => {
-    call.sendDtmf(dtmf);
+    if (dtmf.match(/[^0-9A-Da-d#*]/) !== null) {
+      throw 'Invalid DTMF string';
+    }
+    if (call._session._sessionDescriptionHandler._peerConnection) {
+      try {
+        var pc = call._session._sessionDescriptionHandler._peerConnection;
+        WebRTCModule.peerConnectionSendDTMF(
+          dtmf,
+          500,
+          400,
+          pc._peerConnectionId
+        );
+      } catch (e) {
+        console.error('AculabBaseClass: Exception sending DTMF: ' + e);
+      }
+    } else {
+      throw 'DTMF send error - no peer connection';
+    }
   };
 
   /**
