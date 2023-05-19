@@ -182,12 +182,7 @@ export class AculabBaseClass {
     if (call._session._sessionDescriptionHandler._peerConnection) {
       try {
         var pc = call._session._sessionDescriptionHandler._peerConnection;
-        WebRTCModule.peerConnectionSendDTMF(
-          dtmf,
-          500,
-          400,
-          pc._peerConnectionId
-        );
+        WebRTCModule.peerConnectionSendDTMF(dtmf, 500, 400, pc._pcId);
       } catch (e) {
         console.error('AculabBaseClass: Exception sending DTMF: ' + e);
       }

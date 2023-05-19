@@ -34,6 +34,16 @@ npm install --save react-native-aculab-client react-native-webrtc
 npx pod-install
 ```
 
+### Include react-native-get-random-values
+
+add import to your index.js file
+
+```ts
+import 'react-native-get-random-values';
+```
+
+if you fail to do this step constructing of call object will always fail.
+
 ### Manually add DTMF method for android
 
 Open your_project/node_modules/react-native-webrtc/android/src/main/java/com/oney/WebRTCModule/WebRTCModule.java and add the method below into class WebRTCModule.

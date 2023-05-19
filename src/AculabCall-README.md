@@ -333,7 +333,7 @@ Use state **callState** as indication of current state.
 | unregister()                |           | Disable WebRTC - call this method when the component will unmount           |
 | addCallKeepListeners()      |           | Add listeners for CallKeep and incoming call notification (Android) - call this method when the componentDidMount will |
 | destroyListeners()          |           | Destroy listeners for CallKeep and incoming call notification (Android) - call this method when the component will unmount           |
-| onActivateAudioSession()    |           | overwrite this method to deliver own logic (e.g. outgoing ringtone)         |
+| retrieveCallUuid(call: AculabCloudCall)    | string          | Retrieve uuid from call object provided         |
 
 ### AculabCall helpers
 
