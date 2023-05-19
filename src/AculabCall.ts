@@ -5,14 +5,14 @@ import {
   cancelIncomingCallNotification,
   aculabClientEvent,
 } from './AculabClientModule';
-import RNCallKeep, { IOptions } from 'react-native-callkeep';
+import RNCallKeep, { type IOptions } from 'react-native-callkeep';
 import type {
   AculabCallProps,
   AculabCallState,
   CallRecord,
   CallType,
 } from './types';
-import uuid from 'react-native-uuid';
+import { v4 as uuid } from 'uuid';
 import Counter from './Counter';
 
 /**
@@ -34,7 +34,7 @@ export const initializeCallKeep = async (appName: string) => {
     selfManaged: true,
   };
 
-  if (Platform.OS === 'android' && Platform.Version >= 30) {
+  if (Platform.OS === 'android' && (Platform.Version as number) >= 30) {
     androidSetup.foregroundService = {
       channelId: 'callkeep_channel',
       channelName: 'Foreground service',
@@ -193,7 +193,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * e.g., play a ringtone for outbound call
    */
   onActivateAudioSession() {
-    // you might want to do start playing ringback if it is an outgoing call
+    // you might want to do start playing ringBack if it is an outgoing call
   }
 
   /**
@@ -325,16 +325,38 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
   }
 
   /**
+   * DEPRECATED:\
+   * Please use method RetrieveCallUuid and set the callUuid manually.\
+   * Another way is to use callUuid (e.g.: aculabCloudCall.callUuid).\
+   * \
    * Assign random UUID to callUuid state if the state doesn't hold any.
    * @param {any} callBack - callback after state is set
    */
   getCallUuid(callBack?: () => any): void {
+    console.warn(
+      'function getCallUuid is deprecated! Please use method RetrieveCallUuid and set the callUuid manually.\
+      Another way is to use callUuid (e.g.: aculabCloudCall.callUuid).'
+    );
     if (this.state.callUuid === '' || !this.state.callUuid) {
-      this.setState({ callUuid: uuid.v4() }, callBack);
+      this.setState({ callUuid: uuid() }, callBack);
     } else {
       if (callBack) {
         callBack();
       }
+    }
+  }
+
+  /**
+   * Returns call uuid retrieved from call object\
+   * requires aculab-webrtc v^3.3.1
+   * @param call active aculab cloud call object
+   */
+  retrieveCallUuid(call: any): string | undefined {
+    try {
+      return call.callUuid;
+    } catch (err) {
+      console.error('[RetrieveCallUuid]', err);
+      return;
     }
   }
 
