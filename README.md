@@ -8,9 +8,9 @@ This package implements [Aculab](https://www.aculab.com/) webRTC services in a R
 
 This package holds
 
-- [AculabBaseClass](https://github.com/aculab-com/react-native-aculab-client.git) that is ideal for coding your own function or class components.
-- [AcuMobCom](https://github.com/aculab-com/react-native-aculab-client.git) a class component that provides all you need for basic call with minimal requirements. As class component it holds all states therefore is less flexible than a function component you can make yourself but it work out of the box.
-- [AculabCall](https://github.com/aculab-com/react-native-aculab-client.git) a class component that on top of basic functionality makes use of [react-native-callkeep](https://github.com/react-native-webrtc/react-native-callkeep) package and it's perks.
+- [AculabBaseClass](https://github.com/aculab-com/react-native-aculab-client/tree/main#1-aculabbaseclass) is ideal for coding your own function or class components.
+- [AcuMobCom](https://github.com/aculab-com/react-native-aculab-client/tree/main#2-acumobcom-class-component) a class component that provides all you need for basic call with minimal requirements. As class component it holds all states therefore is less flexible than a function component you can make yourself but it work out of the box.
+- [AculabCall](https://github.com/aculab-com/react-native-aculab-client/tree/main#3-aculabcall-class-component) a class component that on top of basic functionality makes use of [react-native-callkeep](https://github.com/react-native-webrtc/react-native-callkeep) package and it's perks.
 
 ---
 
