@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -14,6 +15,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 public class IncomingCallActivity extends Activity {
+  private static final String TAG = "AculabClientModule";
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public class IncomingCallActivity extends Activity {
     String caller = getIntent().getExtras().getString("info");
     String uuid = getIntent().getExtras().getString("uuid");
 
+    Log.d(TAG, "onCreate IncomingCallActivity: uuid " + uuid + " name: " + name + " caller: " + caller);
     if (getIntent().hasExtra("accepted")) {
       acceptCall(name, caller, uuid);
     }
@@ -36,10 +39,12 @@ public class IncomingCallActivity extends Activity {
 
   @Override
   public void onBackPressed() {
-    // Dont back
+    // Do not back
+    return;
   }
 
-  public void acceptCall(String name, String caller, String uuid) {
+  private void acceptCall(String name, String caller, String uuid) {
+    Log.d(TAG, "acceptCall uuid " + uuid);
     WritableMap params = Arguments.createMap();
     params.putBoolean("callAccepted", true);
     params.putString("name", name);
@@ -51,6 +56,7 @@ public class IncomingCallActivity extends Activity {
   }
 
   private void rejectCall(String name, String caller, String uuid) {
+    Log.d(TAG, "rejectCall uuid " + uuid);
     WritableMap params = Arguments.createMap();
     params.putBoolean("callAccepted", false);
     params.putString("name", name);
@@ -95,6 +101,12 @@ public class IncomingCallActivity extends Activity {
         rejectCall(name, caller, uuid);
       }
     });
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    Log.d(TAG, "destroy IncomingCallActivity");
   }
 
   private void stopService() {

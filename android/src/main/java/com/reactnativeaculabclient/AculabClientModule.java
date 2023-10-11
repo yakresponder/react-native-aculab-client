@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.util.Log;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -36,6 +37,7 @@ public class AculabClientModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void switchAudioOutput(Boolean isSpeakerPhoneOn) {
+        Log.d(TAG, "switchAudioOutput param: " + isSpeakerPhoneOn);
         AudioManager audioManager = (AudioManager)this.reactContext.getSystemService(this.reactContext.AUDIO_SERVICE);
 
         if (isSpeakerPhoneOn != audioManager.isSpeakerphoneOn())  {
@@ -52,6 +54,7 @@ public class AculabClientModule extends ReactContextBaseJavaModule {
     // Incoming Call Notification
     @ReactMethod
     public void incomingCallNotification(String uuid, String channelId, String channelName, String channelDescription, String contentText, int notificationId) {
+      Log.d(TAG, "incomingCallNotification uuid" + uuid);
       Intent serviceIntent = new Intent(reactContext, IncomingCallService.class)
         .putExtra("uuid", uuid)
         .putExtra("channelId", channelId)

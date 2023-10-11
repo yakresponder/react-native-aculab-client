@@ -23,7 +23,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 public class IncomingCallService extends ConnectionService {
 
   public static final ReactApplicationContext reactContext = AculabClientModule.reactContext;
-  private static final String TAG = "[ReactNativeAculabClient]";
+  private static final String TAG = "AculabClientModule";
 
   @Override
   public void onCreate() {
@@ -46,21 +46,21 @@ public class IncomingCallService extends ConnectionService {
     fullScreenIntent.putExtra("name", "Incoming Call");
     fullScreenIntent.putExtra("info", contentText);
     fullScreenIntent.putExtra("uuid", uuid);
-    PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(reactContext, 0, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(reactContext, 0, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
     Intent acceptCallIntent = new Intent(reactContext, IncomingCallActivity.class);
     acceptCallIntent.putExtra("accepted", true);
     acceptCallIntent.putExtra("name", "Incoming Call");
     acceptCallIntent.putExtra("info", contentText);
     acceptCallIntent.putExtra("uuid", uuid);
-    PendingIntent acceptCallPendingIntent = PendingIntent.getActivity(reactContext, 1, acceptCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    PendingIntent acceptCallPendingIntent = PendingIntent.getActivity(reactContext, 1, acceptCallIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
     Intent rejectCallIntent = new Intent(reactContext, IncomingCallActivity.class);
     rejectCallIntent.putExtra("rejected", true);
     rejectCallIntent.putExtra("name", "Incoming Call");
     rejectCallIntent.putExtra("info", contentText);
     rejectCallIntent.putExtra("uuid", uuid);
-    PendingIntent rejectCallPendingIntent = PendingIntent.getActivity(reactContext, 2, rejectCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    PendingIntent rejectCallPendingIntent = PendingIntent.getActivity(reactContext, 2, rejectCallIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
 
 
@@ -86,7 +86,7 @@ public class IncomingCallService extends ConnectionService {
       .setPriority(NotificationCompat.PRIORITY_HIGH)
       .setCategory(NotificationCompat.CATEGORY_CALL);
 
-    Log.d(TAG, "[IncomingCallService] Starting foreground service");
+    Log.d(TAG, "Starting foreground service");
 
     Notification incomingCallNotification = notificationBuilder.build();
     startForeground(notificationId, incomingCallNotification);
@@ -97,6 +97,7 @@ public class IncomingCallService extends ConnectionService {
   @Override
   public void onDestroy() {
     super.onDestroy();
+    Log.d(TAG, "destroy foreground service");
   }
 
   private void createNotificationChannel(String channelId, String channelName, String channelDescription) {
