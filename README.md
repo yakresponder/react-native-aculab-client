@@ -24,7 +24,7 @@ AculabBaseClass is an Aculab WebRTC class developed to be used in a react native
 [![aculab-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
 [![react-native-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
-[![react-native-get-random-values](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-get-random-values)](https://www.npmjs.com/package/react-native-get-random-values)
+[![react-native-get-random-values](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-get-random-values)](https://www.npmjs.com/package/react-native-get-random-values)
 
 AculabBaseClass [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AculabBaseClass-README.md)
 
@@ -53,7 +53,7 @@ AcuMobCom is a react native *class component* allowing iOS and Android platforms
 [![aculab-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
 [![react-native-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
-[![react-native-get-random-values](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-get-random-values)](https://www.npmjs.com/package/react-native-get-random-values)
+[![react-native-get-random-values](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-get-random-values)](https://www.npmjs.com/package/react-native-get-random-values)
 
 AcuMobCom [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AcuMobCom-README.md)
 
