@@ -2,8 +2,9 @@
 
 This package implements [Aculab](https://www.aculab.com/) webRTC services in a React Native project
 
-![npm](https://img.shields.io/npm/dw/react-native-aculab-client)
-[![npm_package](https://img.shields.io/npm/v/react-native-aculab-client?color=green)](https://www.npmjs.com/package/react-native-aculab-client)
+![npm](https://img.shields.io/npm/dm/%40aculab-com/react-native-aculab-client)
+[![npm_package](https://img.shields.io/npm/v/%40aculab-com/react-native-aculab-client
+)](https://www.npmjs.com/package/@aculab-com/react-native-aculab-client)
 [![license](https://img.shields.io/npm/l/react-native-aculab-client)](https://github.com/aculab-com/react-native-aculab-client/blob/main/LICENSE)
 
 This package holds
@@ -20,9 +21,10 @@ AculabBaseClass is an Aculab WebRTC class developed to be used in a react native
 
 ### AculabBaseClass dependencies
 
-[![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
-[![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
-[![react-native-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
+[![aculab-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
+[![react-native-base64](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
+[![react-native-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
+[![react-native-get-random-values](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-get-random-values)](https://www.npmjs.com/package/react-native-get-random-values)
 
 AculabBaseClass [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AculabBaseClass-README.md)
 
@@ -48,9 +50,10 @@ AcuMobCom is a react native *class component* allowing iOS and Android platforms
 
 ### AcuMobCom dependencies
 
-[![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
-[![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
-[![react-native-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
+[![aculab-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
+[![react-native-base64](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
+[![react-native-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
+[![react-native-get-random-values](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-get-random-values)](https://www.npmjs.com/package/react-native-get-random-values)
 
 AcuMobCom [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AcuMobCom-README.md)
 
@@ -66,10 +69,11 @@ AculabCall is a react native *class component* allowing iOS and Android platform
 
 ### AculabCall dependencies
 
-[![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
-[![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
-[![react-native-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
-[![react-native-callkeep](https://img.shields.io/npm/dependency-version/react-native-aculab-client/dev/react-native-callkeep)](https://www.npmjs.com/package/react-native-callkeep)
+[![aculab-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
+[![react-native-base64](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
+[![react-native-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
+[![react-native-get-random-values](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-get-random-values)](https://www.npmjs.com/package/react-native-get-random-values)
+[![react-native-callkeep](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/dev/react-native-callkeep)](https://www.npmjs.com/package/react-native-callkeep)
 
 AculabCall [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AculabCall-README.md)
 
