@@ -72,7 +72,7 @@ AculabCall is a react native *class component* allowing iOS and Android platform
 [![aculab-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
 [![react-native-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
-[![react-native-get-random-values](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-get-random-values)](https://www.npmjs.com/package/react-native-get-random-values)
+[![react-native-get-random-values](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-get-random-values)](https://www.npmjs.com/package/react-native-get-random-values)
 [![react-native-callkeep](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/dev/react-native-callkeep)](https://www.npmjs.com/package/react-native-callkeep)
 
 AculabCall [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AculabCall-README.md)
