@@ -90,13 +90,13 @@ export class AculabBaseClass {
    * @param {string} clientId id of client to call
    * @returns  call object
    */
-  callClient = (clientId: string) => {
+  callClient = (clientId: string, callOptions = this._callOptions) => {
     if (this.clientCheck() && clientId) {
       const callClientName = deleteSpaces(clientId);
       const call = this._client.callClient(
         callClientName,
         this._client._token,
-        this._callOptions
+        callOptions
       );
       this.setupCb(call);
       return call;
