@@ -9,11 +9,16 @@ import RNCallKeep, { type IOptions } from 'react-native-callkeep';
 import type {
   AculabCallProps,
   AculabCallState,
+  AndroidCallEventRes,
   CallRecord,
   CallType,
 } from './types';
 import { v4 as uuid } from 'uuid';
 import Counter from './Counter';
+import type {
+  CallObj,
+  OnIncomingObj,
+} from '@aculab-com/aculab-webrtc/lib/types';
 
 /**
  * Run this function before using CallKeep
@@ -158,14 +163,14 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
     }
   }
 
-  rejectedCallAndroid(_payload: any) {
+  rejectedCallAndroid(_payload: AndroidCallEventRes) {
     this.setState({ incomingUI: false });
     this.endCallKeepCall(this.state.callUuid as string);
     this.setState({ callKeepCallActive: false });
     this.setState({ callUIInteraction: 'rejected' }, () => this.endCall());
   }
 
-  answeredCallAndroid(_payload: any) {
+  answeredCallAndroid(_payload: AndroidCallEventRes) {
     this.setState({ calling: 'client' });
     this.setState({ callUIInteraction: 'answered' });
   }
@@ -272,8 +277,8 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
 
   /**
    * Start outbound call
-   * @param {'service' | 'client'} type define if calling service or client
-   * @param {string} id service or client name to call
+   * @param type define if calling service or client
+   * @param id service or client name to call
    */
   startCall(type: 'service' | 'client', id: string) {
     this.setState({ outboundCall: true });
@@ -287,7 +292,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
         false
       );
     } else {
-      RNCallKeep.startCall(<string>this.state.callUuid, id, id);
+      RNCallKeep.startCall(this.state.callUuid as string, id, id);
     }
     switch (type) {
       case 'service': {
@@ -317,7 +322,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * Answer call webrtc\
    * Answer call CallKeep
    */
-  async answer(): Promise<void> {
+  async answer() {
     super.answer();
     if (this.state.call && Platform.OS === 'android') {
       RNCallKeep.answerIncomingCall(<string>this.state.callUuid);
@@ -332,7 +337,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * Assign random UUID to callUuid state if the state doesn't hold any.
    * @param {any} callBack - callback after state is set
    */
-  getCallUuid(callBack?: () => any): void {
+  getCallUuid(callBack?: () => any) {
     console.warn(
       'function getCallUuid is deprecated! Please use method RetrieveCallUuid and set the callUuid manually.\
       Another way is to use callUuid (e.g.: aculabCloudCall.callUuid).'
@@ -351,7 +356,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * requires aculab-webrtc v^3.3.1
    * @param call active aculab cloud call object
    */
-  retrieveCallUuid(call: any): string | undefined {
+  retrieveCallUuid(call: any) {
     try {
       return call.callUuid;
     } catch (err) {
@@ -362,9 +367,9 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
 
   /**
    * Called when a call is connected
-   * @param {any} obj AcuMobCom object or Incoming call object
+   * @param  obj call object
    */
-  onConnected(obj: any): void {
+  onConnected(obj: CallObj) {
     super.onConnected(obj);
     RNCallKeep.setCurrentCallActive(<string>this.state.callUuid);
     if (!this.state.incomingCallClientId) {
@@ -379,9 +384,9 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
 
   /**
    * Called when webrtc connection state is 'incoming'
-   * @param obj - webrtc object from aculab-webrtc
+   * @param obj cal object
    */
-  onIncoming(obj: any): void {
+  onIncoming(obj: OnIncomingObj) {
     this.setState({ inboundCall: true });
     super.onIncoming(obj);
     if (!this.state.incomingUI && this.state.callUIInteraction === 'none') {
@@ -412,12 +417,12 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
   /**
    * Android only\
    * Log call after ended to Call Log (History).
-   * @param {typeof Counter} counter instance of counter class
-   * @param {CallType} callType to be logged
-   * @param {string} incomingCallClientId to be logged
-   * @param {string} callClientId to be logged
-   * @param {string} callServiceId to be logged
-   * @returns {CallRecord} call record object
+   * @param  counter instance of counter class
+   * @param  callType to be logged
+   * @param  incomingCallClientId to be logged
+   * @param  callClientId to be logged
+   * @param  callServiceId to be logged
+   * @returns call record object
    */
   createLastCallObject = (
     counter: typeof Counter,

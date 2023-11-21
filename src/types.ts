@@ -1,4 +1,10 @@
+import type AculabCloudClient from '@aculab-com/aculab-webrtc';
+import type { AculabCloudIncomingCall } from '@aculab-com/aculab-webrtc/lib/aculab-cloud-incoming-call';
+import type { AculabCloudOutgoingCall } from '@aculab-com/aculab-webrtc/lib/aculab-cloud-outgoing-call';
+import type { MediaStream } from 'react-native-webrtc';
+
 export type CallType = 'none' | 'client' | 'service';
+export type Call = AculabCloudIncomingCall | AculabCloudOutgoingCall;
 
 export interface AcuMobComProps {
   webRTCToken: string;
@@ -9,12 +15,12 @@ export interface AcuMobComProps {
 }
 
 export interface AcuMobComState {
-  remoteStream: any;
-  localStream: any;
+  remoteStream: MediaStream | null;
+  localStream: MediaStream | null;
   inboundCall: boolean;
   outboundCall: boolean;
   serviceName: string;
-  client: any;
+  client: AculabCloudClient | null;
   callClientId: string; // call client with this ID
   calling: CallType;
   call: any;
@@ -43,7 +49,7 @@ export interface AcuMobComState {
 
 export interface AculabCallState extends AcuMobComState {
   // CallKeep
-  callUuid: string | number[];
+  callUuid: string;
   callUIInteraction: 'none' | 'answered' | 'rejected';
   incomingUI: boolean;
   callKeepCallActive: boolean;
@@ -77,4 +83,11 @@ export interface CallRecord {
   action: 'incoming' | 'outgoing' | 'missed';
   duration: number | undefined; // in seconds
   type: CallType;
+}
+
+export interface AndroidCallEventRes {
+  callAccepted: false;
+  name: string;
+  caller: string;
+  uuid: string;
 }
