@@ -8,7 +8,8 @@ Aculab react-native sdk
 
 Dependencies
 
-[![aculab-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
+[![aculab-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/%40aculab-com/aculab-webrtc
+)](https://www.npmjs.com/package/@aculab-com/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
 [![react-native-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
 [![react-native-callkeep](https://img.shields.io/npm/dependency-version/react-native-aculab-client/dev/react-native-callkeep)](https://www.npmjs.com/package/react-native-callkeep)
@@ -263,14 +264,14 @@ Use state **callState** as indication of current state.
 1. set state callClientId to client ID you want to call
 2. call callClient method
 
-**NOTE: In order to successfully call between clients, they must be registered under the same Aculab Cloud Username. For Example user 'Anna123' registered under Cloud Username 'blue.star@company.com' can call 'Tom123' if 'Tom123' is registered under Cloud Username 'blue.star@company.com'. If 'Tom123' is registered under Cloud Username 'green.star@company.com' the call will always fail.**
+**NOTE: In order to successfully call between clients, they must be registered under the same Aculab Cloud Username. For Example user 'Anna123' registered under Cloud Username '<blue.star@company.com>' can call 'Tom123' if 'Tom123' is registered under Cloud Username '<blue.star@company.com>'. If 'Tom123' is registered under Cloud Username '<green.star@company.com>' the call will always fail.**
 
 #### Call Service
 
 1. set state serviceName to service ID you want to call
 2. call callService method
 
-**NOTE: In order to successfully call service, the user calling the service must be registered under the same Aculab Cloud Username as the service. For Example user 'Anna123' registered under Cloud Username 'blue.star@company.com' can call inbound service 'current-time' registered under Cloud Username 'blue.star@company.com'. If 'Anna123' would register under Cloud Username 'green.star@company.com' the call to the service will always fail.**
+**NOTE: In order to successfully call service, the user calling the service must be registered under the same Aculab Cloud Username as the service. For Example user 'Anna123' registered under Cloud Username '<blue.star@company.com>' can call inbound service 'current-time' registered under Cloud Username '<blue.star@company.com>'. If 'Anna123' would register under Cloud Username '<green.star@company.com>' the call to the service will always fail.**
 
 - More information about inbound and outbound service can be found [here](https://www.aculab.com/cloud/guides/outbound-and-inbound-services/).
 - More information about REST and UAS API service can be found [here](https://www.aculab.com/cloud/guides/which-api-is-appropriate-for-me/).

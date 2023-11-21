@@ -5,6 +5,11 @@ class Counter {
   constructor() {
     this._timer = 0;
   }
+
+  get lastTimes() {
+    return this._timer;
+  }
+
   /**
    * starts counter, add 1 to timer state every second.
    */

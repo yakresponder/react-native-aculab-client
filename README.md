@@ -21,7 +21,8 @@ AculabBaseClass is an Aculab WebRTC class developed to be used in a react native
 
 ### AculabBaseClass dependencies
 
-[![aculab-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
+[![aculab-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/%40aculab-com/aculab-webrtc
+)](https://www.npmjs.com/package/@aculab-com/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
 [![react-native-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
 [![react-native-get-random-values](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-get-random-values)](https://www.npmjs.com/package/react-native-get-random-values)
@@ -50,7 +51,8 @@ AcuMobCom is a react native *class component* allowing iOS and Android platforms
 
 ### AcuMobCom dependencies
 
-[![aculab-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
+[![aculab-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/%40aculab-com/aculab-webrtc
+)](https://www.npmjs.com/package/@aculab-com/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
 [![react-native-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
 [![react-native-get-random-values](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-get-random-values)](https://www.npmjs.com/package/react-native-get-random-values)
@@ -69,7 +71,8 @@ AculabCall is a react native *class component* allowing iOS and Android platform
 
 ### AculabCall dependencies
 
-[![aculab-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/aculab-webrtc)](https://www.npmjs.com/package/aculab-webrtc)
+[![aculab-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/%40aculab-com/aculab-webrtc
+)](https://www.npmjs.com/package/@aculab-com/aculab-webrtc)
 [![react-native-base64](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
 [![react-native-webrtc](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
 [![react-native-get-random-values](https://img.shields.io/npm/dependency-version/%40aculab-com/react-native-aculab-client/peer/react-native-get-random-values)](https://www.npmjs.com/package/react-native-get-random-values)

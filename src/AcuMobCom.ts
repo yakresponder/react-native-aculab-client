@@ -1,6 +1,14 @@
 import { Component } from 'react';
 import AculabBaseClass from './AculabBaseClass';
 import type { AcuMobComProps, AcuMobComState } from './types';
+import type {
+  CallObj,
+  DisconnectedCallObj,
+  MediaCallObj,
+  MuteObj,
+  OnIncomingObj,
+} from '@aculab-com/aculab-webrtc/lib/types';
+import type { MediaStream } from 'react-native-webrtc';
 
 /**
  * AcuMobCom is a complex component Allowing WebRTC communication using Aculab Cloud Services.
@@ -40,7 +48,7 @@ export class AculabBaseComponent<
    * Creates AculabCloudClient object and allows incoming calls
    * @param {string} webRTCToken optional parameter, if not provided the function uses props.webRTCToken
    */
-  async register(webRTCToken = this.props.webRTCToken): Promise<void> {
+  async register(webRTCToken: string = this.props.webRTCToken): Promise<void> {
     if (this.state.callState === 'idle') {
       const newClient = await AculabBaseClass.register(
         this.props.cloudRegionId,
@@ -55,31 +63,55 @@ export class AculabBaseComponent<
         this.setState({ client: newClient });
       }
       try {
-        AculabBaseClass.onDisconnected = function (this: AcuMobCom) {
+        AculabBaseClass.onDisconnected = function (
+          this: AcuMobCom,
+          _callObj: DisconnectedCallObj
+        ) {
           this.onDisconnected();
         }.bind(this);
-        AculabBaseClass.onRinging = function (this: AcuMobCom) {
+        AculabBaseClass.onRinging = function (
+          this: AcuMobCom,
+          _callObj: CallObj
+        ) {
           this.setState({ callState: 'ringing' });
         }.bind(this);
-        AculabBaseClass.onGotMedia = function (this: AcuMobCom, obj: any) {
+        AculabBaseClass.onGotMedia = function (
+          this: AcuMobCom,
+          obj: MediaCallObj
+        ) {
           this.onGotMedia(obj);
         }.bind(this);
-        AculabBaseClass.onConnected = function (this: AcuMobCom, obj: any) {
+        AculabBaseClass.onConnected = function (this: AcuMobCom, obj: CallObj) {
           this.onConnected(obj);
         }.bind(this);
-        AculabBaseClass.onIncomingCall = function (this: AcuMobCom, obj: any) {
+        AculabBaseClass.onIncomingCall = function (
+          this: AcuMobCom,
+          obj: OnIncomingObj
+        ) {
           this.onIncoming(obj);
         }.bind(this);
-        AculabBaseClass.onLocalVideoMute = function (this: AcuMobCom) {
+        AculabBaseClass.onLocalVideoMute = function (
+          this: AcuMobCom,
+          _obj: MuteObj
+        ) {
           this.onLocalVideoMute();
         }.bind(this);
-        AculabBaseClass.onLocalVideoUnmute = function (this: AcuMobCom) {
+        AculabBaseClass.onLocalVideoUnmute = function (
+          this: AcuMobCom,
+          _obj: MuteObj
+        ) {
           this.onLocalVideoUnmute();
         }.bind(this);
-        AculabBaseClass.onRemoteVideoMute = function (this: AcuMobCom) {
+        AculabBaseClass.onRemoteVideoMute = function (
+          this: AcuMobCom,
+          _obj: MuteObj
+        ) {
           this.onRemoteVideoMute();
         }.bind(this);
-        AculabBaseClass.onRemoteVideoUnmute = function (this: AcuMobCom) {
+        AculabBaseClass.onRemoteVideoUnmute = function (
+          this: AcuMobCom,
+          _obj: MuteObj
+        ) {
           this.onRemoteVideoUnmute();
         }.bind(this);
       } catch (err: any) {
@@ -214,7 +246,7 @@ export class AculabBaseComponent<
   /**
    * Called when incoming/outgoing call is disconnected\
    * set states\
-   * @param {any} obj webrtc object from aculab-webrtc
+   * @param obj webrtc object from aculab-webrtc
    */
   onDisconnected() {
     this.setState({ call: null });
@@ -229,30 +261,30 @@ export class AculabBaseComponent<
   }
 
   // onMedia CB
-  onGotMedia(obj: any) {
-    if (obj.call && obj.stream) {
-      this.setState({ remoteStream: obj.stream });
-    }
+  onGotMedia(obj: MediaCallObj) {
+    this.setState({ remoteStream: obj.stream });
     this.setState({ callState: 'got media' });
   }
 
   /**
    * Called when a call is connected
-   * @param {any} obj webrtc object from aculab-webrtc
+   * @param _obj call object from aculab-webrtc
    */
-  onConnected(obj: any) {
+  onConnected(_obj: CallObj) {
     this.setState({
-      localStream: AculabBaseClass.getLocalStream(this.state.call),
+      localStream: AculabBaseClass.getLocalStream(
+        this.state.call
+      ) as unknown as MediaStream,
     });
-    this.setState({ remoteStream: obj.call._remote_stream });
+    // this.setState({ remoteStream: obj.call._remote_stream });
     this.setState({ callState: 'connected' });
   }
 
   /**
    * Called when an incoming call occurs
-   * @param {any} obj webrtc object from aculab-webrtc
+   * @param obj webrtc object from aculab-webrtc
    */
-  onIncoming(obj: any): void {
+  onIncoming(obj: OnIncomingObj) {
     this.setState({ incomingCallClientId: obj.from });
     this.setState({ call: obj.call });
     this.setState({ calling: 'client' });

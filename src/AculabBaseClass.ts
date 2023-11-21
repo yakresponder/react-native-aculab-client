@@ -1,20 +1,27 @@
-import { registerGlobals } from 'react-native-webrtc';
-// @ts-ignore
-import { AculabCloudClient } from 'aculab-webrtc';
+import { MediaStream, registerGlobals } from 'react-native-webrtc';
+import { AculabCloudClient } from '@aculab-com/aculab-webrtc';
 import { deleteSpaces, showAlert } from './helpers';
 import { NativeModules } from 'react-native';
+import type {
+  AculabCloudIncomingCall,
+  AculabCloudOutgoingCall,
+  CallObj,
+  CallOptions,
+  DisconnectedCallObj,
+  MediaCallObj,
+  MuteObj,
+  OnIncomingObj,
+} from '@aculab-com/aculab-webrtc/lib/types';
+import type { Call } from './types';
 
 const { WebRTCModule } = NativeModules;
+
 /**
  * AculabBaseClass is a complex component Allowing WebRTC communication using Aculab Cloud Services.
  */
 export class AculabBaseClass {
-  _client: any; // aculabCloudClient does not have types
-  _callOptions: {
-    constraints: { audio: boolean; video: boolean };
-    receiveAudio: boolean;
-    receiveVideo: boolean;
-  };
+  _client: AculabCloudClient | null;
+  _callOptions: CallOptions;
   _outputAudio: boolean;
   _mic: boolean;
   _outputVideo: boolean;
@@ -27,6 +34,7 @@ export class AculabBaseClass {
       receiveAudio: true,
       receiveVideo: true,
     };
+    this._client = null;
     this._outputAudio = false;
     this._mic = false;
     this._outputVideo = false;
@@ -44,18 +52,21 @@ export class AculabBaseClass {
    * @param {string} webRtcToken
    * @returns {any} new instance of aculab cloud client class
    */
-  register = async (
+  register = (
     cloudRegionId: string,
     webRTCAccessKey: string,
     registerClientId: string,
-    logLevel: string | number,
+    logLevel: string | number, // keep string for backwards compatibility
     webRtcToken: string
-  ): Promise<any> => {
-    const newClient = await new AculabCloudClient(
+  ) => {
+    // if logLevel is string convert it to a number.
+    let loggingLevel =
+      typeof logLevel === 'string' ? parseInt(logLevel, 10) : logLevel;
+    const newClient = new AculabCloudClient(
       cloudRegionId,
       webRTCAccessKey,
       registerClientId,
-      logLevel
+      loggingLevel
     );
     newClient.onIncoming = this.onIncoming.bind(this);
     newClient.enableIncoming(webRtcToken);
@@ -91,16 +102,17 @@ export class AculabBaseClass {
    * @returns  call object
    */
   callClient = (clientId: string, callOptions = this._callOptions) => {
-    if (this.clientCheck() && clientId) {
+    if (this.clientCheck()) {
       const callClientName = deleteSpaces(clientId);
-      const call = this._client.callClient(
+      const call = this._client!.callClient(
         callClientName,
-        this._client._token,
+        this._client!._token,
         callOptions
       );
       this.setupCb(call);
       return call;
     }
+    return;
   };
 
   /**
@@ -110,19 +122,20 @@ export class AculabBaseClass {
    * @returns call object
    */
   callService = (serviceId: string) => {
-    if (this.clientCheck() && serviceId) {
+    if (this.clientCheck()) {
       const callServiceName = deleteSpaces(serviceId);
-      const call = this._client.callService(callServiceName);
+      const call = this._client!.callService(callServiceName);
       this.setupCb(call);
       return call;
     }
+    return;
   };
 
   /**
    * Stops the call from parameter if parameter.
    * @param call call object
    */
-  stopCall = (call: any) => {
+  stopCall = (call: Call) => {
     call.disconnect();
   };
 
@@ -131,19 +144,21 @@ export class AculabBaseClass {
    * @param {boolean} localVideoMuted pass true if local video is muted else false
    * @param call active call to swap the camera on.
    */
-  swapCam = (localVideoMuted: boolean, call: any) => {
+  swapCam = async (localVideoMuted: boolean, call: AculabCloudOutgoingCall) => {
     if (localVideoMuted) {
       console.log(
         '[ AculabBaseClass ]',
         'swap camera allowed only when local video is streaming'
       );
     } else {
-      var stream = this.getLocalStream(call); //NEVER MORE THAN ONE STREAM IN THE ARRAY
+      const stream = await this.getLocalStream(call); //NEVER MORE THAN ONE STREAM IN THE ARRAY
       //Assume first stream and first video track for now
 
-      var theseTracks = stream.getVideoTracks();
-      var thisTrack = theseTracks[0];
-      thisTrack._switchCamera();
+      if (stream) {
+        const theseTracks = stream?.getVideoTracks();
+        const thisTrack = theseTracks[0];
+        thisTrack._switchCamera();
+      }
     }
   };
 
@@ -151,7 +166,7 @@ export class AculabBaseClass {
    * Answer the call from parameter.
    * @param call call object
    */
-  answer = (call: any) => {
+  answer = (call: AculabCloudIncomingCall) => {
     call.answer(this._callOptions);
   };
 
@@ -159,14 +174,14 @@ export class AculabBaseClass {
    * Reject the call from parameter if parameter.
    * @param call call object
    */
-  reject = (call: any) => {
+  reject = (call: AculabCloudIncomingCall) => {
     call.reject();
   };
 
   /**
    * Mute audio or video - true passed for any argument mutes/disables the feature.
    */
-  mute = (call: any) => {
+  mute = (call: Call) => {
     call.mute(this._mic, this._outputAudio, this._camera, this._outputVideo);
   };
 
@@ -175,13 +190,14 @@ export class AculabBaseClass {
    * @param {string} dtmf DTMF character to be sent as a string (e.g. '5')
    * @param call call object
    */
-  sendDtmf = (dtmf: string, call: any) => {
+  sendDtmf = (dtmf: string, call: AculabCloudOutgoingCall) => {
+    //TODO: fix this peer connection replace any with Call
     if (dtmf.match(/[^0-9A-Da-d#*]/) !== null) {
       throw 'Invalid DTMF string';
     }
-    if (call._session._sessionDescriptionHandler._peerConnection) {
+    if (call?._session?.sessionDescriptionHandler?.peerConnection) {
       try {
-        var pc = call._session._sessionDescriptionHandler._peerConnection;
+        var pc = call._session.sessionDescriptionHandler.peerConnection;
         WebRTCModule.peerConnectionSendDTMF(dtmf, 500, 400, pc._pcId);
       } catch (e) {
         console.error('AculabBaseClass: Exception sending DTMF: ' + e);
@@ -195,95 +211,112 @@ export class AculabBaseClass {
    * overwrite this function to insert logic when WebRTC is ringing.
    * @param _obj call object
    */
-  onRinging = (_obj: any) => {};
+  onRinging = (_obj: CallObj) => {};
 
   /**
    * overwrite or extend this function to insert logic when WebRTC has incoming call.
    * @param _obj incoming call object
    */
-  onIncomingCall = (_obj: any) => {};
+  onIncomingCall = (_obj: OnIncomingObj) => {};
 
   /**
    * overwrite this function to insert logic when WebRTC state is gotMedia.
    * @param _obj call object
    */
-  onGotMedia = (_obj: any) => {};
+  onGotMedia = (_obj: MediaCallObj) => {};
 
   /**
    * overwrite this function to insert logic when WebRTC is connecting call.
    * @param _obj call object
    */
-  onConnecting = (_obj: any) => {};
+  onConnecting = (_obj: MediaCallObj) => {};
 
   /**
    * overwrite this function to insert logic when WebRTC connected call.
    * @param _obj call object
    */
-  onConnected = (_obj: any) => {};
+  onConnected = (_obj: CallObj) => {};
 
   /**
    * overwrite this function to insert logic when WebRTC disconnected call.
    * @param _obj call object
    */
-  onDisconnected = (_obj: any) => {};
+  onDisconnected = (_obj: DisconnectedCallObj) => {};
 
   /**
    * overwrite this function to insert logic when local video is muted.
    */
-  onLocalVideoMute = () => {};
+  onLocalVideoMute = (_obj: MuteObj) => {};
 
   /**
    * overwrite this function to insert logic when local video is unmuted.
    */
-  onLocalVideoUnmute = () => {};
+  onLocalVideoUnmute = (_obj: MuteObj) => {};
 
   /**
    * overwrite this function to insert logic when remote video is muted.
    */
-  onRemoteVideoMute = () => {};
+  onRemoteVideoMute = (_obj: MuteObj) => {};
 
   /**
    * overwrite this function to insert logic when remote video is unmuted.
    */
-  onRemoteVideoUnmute = () => {};
+  onRemoteVideoUnmute = (_obj: MuteObj) => {};
 
   /**
    * Handle communication for outgoing call.
    * @param call call object
    */
-  setupCb = (call: any) => {
-    call.onDisconnect = function (this: AculabBaseClass, onDisconnectObj: any) {
+  setupCb = (call: Call) => {
+    call.onDisconnect = function (
+      this: AculabBaseClass,
+      onDisconnectObj: DisconnectedCallObj
+    ) {
       this.onDisconnected(onDisconnectObj);
       this.callDisconnected(onDisconnectObj);
     }.bind(this);
-    call.onRinging = function (this: AculabBaseClass, onRingingObj: any) {
+    call.onRinging = function (this: AculabBaseClass, onRingingObj: CallObj) {
       this.onRinging(onRingingObj);
     }.bind(this);
-    call.onMedia = function (this: AculabBaseClass, onMediaObj: any) {
+    call.onMedia = function (this: AculabBaseClass, onMediaObj: MediaCallObj) {
       this.onGotMedia(onMediaObj);
-      this.gotMedia(onMediaObj);
+      this.gotMedia();
     }.bind(this);
-    call.onConnecting = function (this: AculabBaseClass, onConnectingObj: any) {
+    call.onConnecting = function (
+      this: AculabBaseClass,
+      onConnectingObj: MediaCallObj
+    ) {
       this.onConnecting(onConnectingObj);
     }.bind(this);
-    call.onConnected = function (this: AculabBaseClass, onConnectedObj: any) {
+    call.onConnected = function (
+      this: AculabBaseClass,
+      onConnectedObj: CallObj
+    ) {
       this.onConnected(onConnectedObj);
-      this.connected(onConnectedObj);
     }.bind(this);
-    call.onError = function (this: AculabBaseClass, onErrorObj: any) {
-      this.handleError(onErrorObj);
+    call.onLocalVideoMuteCB = function (
+      this: AculabBaseClass,
+      muteObj: MuteObj
+    ) {
+      this.onLocalVideoMute(muteObj);
     }.bind(this);
-    call.onLocalVideoMuteCB = function (this: AculabBaseClass) {
-      this.onLocalVideoMute();
+    call.onLocalVideoUnMuteCB = function (
+      this: AculabBaseClass,
+      muteObj: MuteObj
+    ) {
+      this.onLocalVideoUnmute(muteObj);
     }.bind(this);
-    call.onLocalVideoUnMuteCB = function (this: AculabBaseClass) {
-      this.onLocalVideoUnmute();
+    call.onRemoteVideoMuteCB = function (
+      this: AculabBaseClass,
+      muteObj: MuteObj
+    ) {
+      this.onRemoteVideoMute(muteObj);
     }.bind(this);
-    call.onRemoteVideoMuteCB = function (this: AculabBaseClass) {
-      this.onRemoteVideoMute();
-    }.bind(this);
-    call.onRemoteVideoUnMuteCB = function (this: AculabBaseClass) {
-      this.onRemoteVideoUnmute();
+    call.onRemoteVideoUnMuteCB = function (
+      this: AculabBaseClass,
+      muteObj: MuteObj
+    ) {
+      this.onRemoteVideoUnmute(muteObj);
     }.bind(this);
   };
 
@@ -291,9 +324,10 @@ export class AculabBaseClass {
    * Called when incoming/outgoing call is disconnected.
    * @param {any} obj remote call object
    */
-  callDisconnected = (obj: any) => {
+  callDisconnected = (obj: DisconnectedCallObj) => {
     if (obj.call != null) {
       obj.call.disconnect();
+      //@ts-expect-error on this one occasion we assign null to the call
       obj.call = null;
       obj.call_state = 'Idle - ' + obj.cause;
       if (obj.cause === 'UNOBTAINABLE') {
@@ -306,18 +340,9 @@ export class AculabBaseClass {
   // onMedia CB
   /**
    * Called when gotMedia from Aculab cloud client.
-   * @param {any} obj remote call object
    */
-  gotMedia = (obj: any) => {
-    if (obj.call !== null) {
-      if (obj.call.stream !== undefined && obj.call.stream !== null) {
-        obj.call.gotremotestream = true;
-      }
-    } else {
-      if (obj.gotremotestream) {
-        obj.gotremotestream = false;
-      }
-    }
+  gotMedia = () => {
+    // do unmute camera and mic when got media
     this._camera = false;
     this._mic = false;
   };
@@ -327,25 +352,17 @@ export class AculabBaseClass {
    * @param call call object
    * @returns local video stream
    */
-  getLocalStream = (call: any) => {
-    return call._session.sessionDescriptionHandler._localMediaStream;
-  };
-
-  /**
-   * Called when a call is connected.
-   * @param {any} obj webrtc object from aculab-webrtc
-   */
-  connected = (obj: any) => {
-    obj.call.call_state = 'Connected';
-  };
-
-  /**
-   * Called when error in a call occurs.
-   * @param {any} obj webrtc object from aculab-webrtc
-   */
-  handleError = (obj: any) => {
-    console.error('[ AculabBaseClass ]', 'handle error OBJ: ', obj.call);
-    obj.call.disconnect();
+  getLocalStream = async (
+    call: AculabCloudOutgoingCall
+  ): Promise<MediaStream | null> => {
+    let localMediaStream = null;
+    if (call._sdh_options) {
+      localMediaStream =
+        await call._session?.sessionDescriptionHandler?.getLocalMediaStream(
+          call!._sdh_options!
+        );
+    }
+    return localMediaStream;
   };
 
   /**
@@ -363,7 +380,9 @@ export class AculabBaseClass {
    * Disable all incoming calls.
    */
   disableIncomingCalls = () => {
-    this._client.disableIncoming();
+    if (this.clientCheck()) {
+      this._client!.disableIncoming();
+    }
   };
 
   /**
