@@ -1,6 +1,6 @@
 {
   "name": "@aculab-com/react-native-aculab-client",
-  "version": "1.5.1-beta",
+  "version": "1.5.2-beta",
   "description": "Aculab client for react native applications",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -162,6 +162,7 @@
     ]
   },
   "dependencies": {
+    "@aculab-com/aculab-webrtc": "^4.0.0-beta",
     "react-native-base64": "^0.2.1",
     "react-native-webrtc": "^106.0.6"
   }
