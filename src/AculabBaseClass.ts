@@ -85,7 +85,7 @@ export class AculabBaseClass {
 
   /**
    * Returns true if aculab cloud client is registered.
-   * @returns {boolean} true = call in progress | false = no call
+   * @returns {boolean} true = client is registered | false = client is not registered
    */
   clientCheck = (): boolean => {
     if (this._client === null) {
