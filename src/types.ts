@@ -1,7 +1,9 @@
 import type AculabCloudClient from '@aculab-com/aculab-webrtc';
-import type { AculabCloudIncomingCall } from '@aculab-com/aculab-webrtc/lib/aculab-cloud-incoming-call';
-import type { AculabCloudOutgoingCall } from '@aculab-com/aculab-webrtc/lib/aculab-cloud-outgoing-call';
 import type { MediaStream } from 'react-native-webrtc';
+import type {
+  AculabCloudIncomingCall,
+  AculabCloudOutgoingCall,
+} from '@aculab-com/aculab-webrtc';
 
 export type CallType = 'none' | 'client' | 'service';
 export type Call = AculabCloudIncomingCall | AculabCloudOutgoingCall;

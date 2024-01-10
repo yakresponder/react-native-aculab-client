@@ -3,15 +3,15 @@ import { AculabCloudClient } from '@aculab-com/aculab-webrtc';
 import { deleteSpaces, showAlert } from './helpers';
 import { NativeModules } from 'react-native';
 import type {
+  AculabCloudCall,
   AculabCloudIncomingCall,
-  AculabCloudOutgoingCall,
   CallObj,
   CallOptions,
   DisconnectedCallObj,
   MediaCallObj,
   MuteObj,
   OnIncomingObj,
-} from '@aculab-com/aculab-webrtc/lib/types';
+} from '@aculab-com/aculab-webrtc';
 import type { Call } from './types';
 
 const { WebRTCModule } = NativeModules;
@@ -144,7 +144,7 @@ export class AculabBaseClass {
    * @param {boolean} localVideoMuted pass true if local video is muted else false
    * @param call active call to swap the camera on.
    */
-  swapCam = async (localVideoMuted: boolean, call: AculabCloudOutgoingCall) => {
+  swapCam = async (localVideoMuted: boolean, call: AculabCloudCall) => {
     if (localVideoMuted) {
       console.log(
         '[ AculabBaseClass ]',
@@ -190,8 +190,7 @@ export class AculabBaseClass {
    * @param {string} dtmf DTMF character to be sent as a string (e.g. '5')
    * @param call call object
    */
-  sendDtmf = (dtmf: string, call: AculabCloudOutgoingCall) => {
-    //TODO: fix this peer connection replace any with Call
+  sendDtmf = (dtmf: string, call: AculabCloudCall) => {
     if (dtmf.match(/[^0-9A-Da-d#*]/) !== null) {
       throw 'Invalid DTMF string';
     }
@@ -353,7 +352,7 @@ export class AculabBaseClass {
    * @returns local video stream
    */
   getLocalStream = async (
-    call: AculabCloudOutgoingCall
+    call: AculabCloudCall
   ): Promise<MediaStream | null> => {
     let localMediaStream = null;
     if (call._sdh_options) {
