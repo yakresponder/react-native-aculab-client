@@ -7,7 +7,7 @@ import type {
   MediaCallObj,
   MuteObj,
   OnIncomingObj,
-} from '@aculab-com/aculab-webrtc/lib/types';
+} from '@aculab-com/aculab-webrtc';
 import type { MediaStream } from 'react-native-webrtc';
 
 /**

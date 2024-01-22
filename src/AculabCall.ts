@@ -15,10 +15,7 @@ import type {
 } from './types';
 import { v4 as uuid } from 'uuid';
 import Counter from './Counter';
-import type {
-  CallObj,
-  OnIncomingObj,
-} from '@aculab-com/aculab-webrtc/lib/types';
+import type { CallObj, OnIncomingObj } from '@aculab-com/aculab-webrtc';
 
 /**
  * Run this function before using CallKeep
