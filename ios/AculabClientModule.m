@@ -13,21 +13,21 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(switchAudioOutput: (BOOL *)isSpeckerPhoneOn) {
+RCT_EXPORT_METHOD(switchAudioOutput:(BOOL)isSpeakerPhoneOn) {
   NSError* error;
   AVAudioSession* session = [AVAudioSession sharedInstance];
 
   [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
   [session setMode:AVAudioSessionModeVoiceChat error:&error];
-  if (isSpeckerPhoneOn) // enable speaker
-  {
+
+  if (isSpeakerPhoneOn) {
     [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
-  }
-  else // disable speaker
-  {
+  } else {
     [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:&error];
   }
+
   [session setActive:YES error:&error];
 }
+
 
 @end
