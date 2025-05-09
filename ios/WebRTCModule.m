@@ -6,7 +6,7 @@
 //
 
 #import "WebRTCModule.h"
-#import <react-native-webrtc/WebRTC.h>
+#import <WebRTC/WebRTC.h>
 
 @implementation WebRTCModule (RTCPeerConnectionAdditions)
 
